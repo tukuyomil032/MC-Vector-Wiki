@@ -1,0 +1,96 @@
+---
+title: Server Lifecycle
+description: Learn how to start, stop, restart, and monitor your Minecraft servers.
+category: features
+order: 1
+---
+
+<En>
+
+MC-Vector provides full control over the lifecycle of your Minecraft servers.
+
+## Operations
+
+All controls are available in the server's control panel header.
+
+| Button | Behavior |
+|--------|----------|
+| **Start** | Allocates memory and starts the Java process |
+| **Stop** | Sends `stop` command — saves world data gracefully |
+| **Restart** | Graceful stop then immediate start |
+| **Kill** | Force-terminates the process — use only if stuck |
+
+> **Warning (Kill):** Force-killing may cause world corruption or data loss. Only use it as a last resort when the server is completely unresponsive.
+
+## Dashboard Monitoring
+
+The **Dashboard** tab shows real-time server metrics powered by [Recharts](https://recharts.org/).
+
+- **CPU and Memory graphs** update every **2 seconds**.
+- The chart keeps the last ~20 data points (≈ 40 seconds of history).
+
+### Status Indicators
+
+| Color | Meaning |
+|-------|---------|
+| 🟢 Green | Online — running normally |
+| 🟡 Yellow | Starting — booting up |
+| 🟠 Orange | Stopping — shutting down |
+| 🔵 Blue | Restarting |
+| 🔴 Red | Offline — stopped |
+
+## Console Tab
+
+The **Console** tab streams live server log output.
+
+- **ANSI 16-color** support makes log levels easy to distinguish.
+- **Auto-scroll** — the view automatically follows new output when you are within **120 px** of the bottom.
+- **Command Input** — type a command and press **Send** (or Enter) to execute it on the server with operator privileges.
+- **2000-line buffer** — older lines are pruned automatically.
+
+</En>
+
+<Ja>
+
+MC-Vectorではサーバーのライフサイクルを完全にコントロールできます。
+
+## 操作ボタン
+
+すべての操作はサーバーコントロールパネルのヘッダーで行えます。
+
+| ボタン | 動作 |
+|--------|------|
+| **Start** | メモリを確保してJavaプロセスを起動 |
+| **Stop** | `stop` コマンドを送信してワールドを安全に保存して停止 |
+| **Restart** | 安全に停止した後すぐに起動 |
+| **Kill** | プロセスを強制終了 — 応答しない場合のみ使用 |
+
+> **警告（Kill）：** 強制終了するとワールドデータが破損したりデータが失われる可能性があります。サーバーが完全に応答しない場合のみ使用してください。
+
+## ダッシュボード監視
+
+**Dashboard**タブでは[Recharts](https://recharts.org/)を使ったリアルタイムのサーバーメトリクスを表示します。
+
+- **CPUとメモリグラフ**は**2秒ごと**に更新されます。
+- グラフには直近約20データポイント（約40秒のデータ）が表示されます。
+
+### ステータス表示
+
+| 色 | 意味 |
+|----|------|
+| 🟢 緑 | オンライン — 正常動作中 |
+| 🟡 黄 | 起動中 |
+| 🟠 橙 | 停止中 |
+| 🔵 青 | 再起動中 |
+| 🔴 赤 | オフライン — 停止状態 |
+
+## コンソールタブ
+
+**Console**タブではサーバーのログ出力をリアルタイムで確認できます。
+
+- **ANSI 16色**対応でログレベルが一目でわかります。
+- **自動スクロール** — 画面下端から**120px以内**にいると新しいログに自動追従します。
+- **コマンド入力** — コマンドを入力して**Send**（またはEnter）を押すとオペレーター権限でサーバーコマンドを実行できます。
+- **2000行バッファ** — 古い行は自動的に削除されます。
+
+</Ja>

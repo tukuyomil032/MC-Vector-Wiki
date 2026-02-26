@@ -1,0 +1,142 @@
+---
+title: Server Properties
+description: A complete guide to configuring server.properties in MC-Vector.
+category: configuration
+order: 1
+---
+
+<En>
+
+MC-Vector provides a graphical editor for the `server.properties` file. Instead of editing raw text, you use toggles, dropdowns, and text fields to configure over 60 settings.
+
+## Categories
+
+Properties are grouped into 6 categories:
+
+| # | Category | Description |
+|---|----------|-------------|
+| 1 | General | Server name, port, difficulty |
+| 2 | Gameplay | Game mode, PvP, force-gamemode |
+| 3 | World | World name, seed, view distance |
+| 4 | Network | Packet compression, entity broadcast range |
+| 5 | Security | Whitelist, online-mode, secure profiles |
+| 6 | Advanced | JMX monitoring, region compression |
+
+### 1. General
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| `motd` | `A Minecraft Server` | Message shown in the server list |
+| `server-port` | `25565` | Port the server listens on |
+| `difficulty` | `easy` | `peaceful` / `easy` / `normal` / `hard` |
+
+### 2. Gameplay
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| `gamemode` | `survival` | Default game mode for players |
+| `pvp` | `true` | Enable player-vs-player combat |
+| `force-gamemode` | `false` | Force players into the default gamemode on join |
+
+### 3. World
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| `level-name` | `world` | Name of the world folder |
+| `seed` | _(empty)_ | World generation seed |
+| `view-distance` | `10` | Maximum chunk render distance |
+
+### 4. Network
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| `network-compression-threshold` | `256` | Packet size (bytes) before compression |
+| `entity-broadcast-range-percentage` | `100` | Distance at which entities are sent to clients |
+
+### 5. Security
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| `whitelist` | `false` | Restrict join to whitelisted players |
+| `online-mode` | `true` | Verify with Mojang auth (set `false` behind Velocity) |
+| `enforce-secure-profile` | `true` | Require players to have a signed chat profile |
+
+### 6. Advanced
+
+| Property | Default | Description |
+|----------|---------|-------------|
+| `jmx-monitoring` | `false` | Enable JMX monitoring |
+| `region-file-compression` | `deflate` | `deflate` / `lz4` / `none` |
+
+## Dynamic Type Inference
+
+If you manually add a custom key to `server.properties`, MC-Vector's editor automatically infers its type (boolean, number, or string) and renders the appropriate input control.
+
+</En>
+
+<Ja>
+
+MC-Vectorは`server.properties`ファイルのグラフィカルエディターを内蔵しており、テキストを直接編集することなく、トグル・ドロップダウン・テキストフィールドで**60項目以上**の設定を変更できます。
+
+## カテゴリ一覧
+
+| # | カテゴリ | 内容 |
+|---|----------|------|
+| 1 | General | サーバー名、ポート、難易度 |
+| 2 | Gameplay | ゲームモード、PvP、強制ゲームモード |
+| 3 | World | ワールド名、シード、視野距離 |
+| 4 | Network | パケット圧縮、エンティティ流の範囲 |
+| 5 | Security | ホワイトリスト、オンラインモード、セキュアプロフィール |
+| 6 | Advanced | JMXモニタリング、リージョン圧縮 |
+
+### 1. General
+
+| プロパティ | デフォルト | 説明 |
+|----------|-----------|------|
+| `motd` | `A Minecraft Server` | サーバーリストに表示されるメッセージ |
+| `server-port` | `25565` | サーバーが待機するポート |
+| `difficulty` | `easy` | `peaceful` / `easy` / `normal` / `hard` |
+
+### 2. Gameplay
+
+| プロパティ | デフォルト | 説明 |
+|----------|-----------|------|
+| `gamemode` | `survival` | プレイヤーのデフォルトゲームモード |
+| `pvp` | `true` | プレイヤー間の戦闘を有効化 |
+| `force-gamemode` | `false` | 参加時にデフォルトゲームモードを強制 |
+
+### 3. World
+
+| プロパティ | デフォルト | 説明 |
+|----------|-----------|------|
+| `level-name` | `world` | ワールドフォルダー名 |
+| `seed` | _(空)_ | ワールド生成シード |
+| `view-distance` | `10` | クライアントへ送信する最大チャンク距離 |
+
+### 4. Network
+
+| プロパティ | デフォルト | 説明 |
+|----------|-----------|------|
+| `network-compression-threshold` | `256` | 圧縮するパケットサイズ（バイト） |
+| `entity-broadcast-range-percentage` | `100` | エンティティをクライアントに送る距離の割合 |
+
+### 5. Security
+
+| プロパティ | デフォルト | 説明 |
+|----------|-----------|------|
+| `whitelist` | `false` | ホワイトリストに登録されたプレイヤーのみ入場を許可 |
+| `online-mode` | `true` | Mojang認証の要求（Velocity使用時は`false`） |
+| `enforce-secure-profile` | `true` | 署名済みチャットプロフィールを要求 |
+
+### 6. Advanced
+
+| プロパティ | デフォルト | 説明 |
+|----------|-----------|------|
+| `jmx-monitoring` | `false` | JMXモニタリングの有効化 |
+| `region-file-compression` | `deflate` | `deflate` / `lz4` / `none` |
+
+## 動的型判定
+
+`server.properties`にカスタムキーを手動で追加した場合、MC-Vectorのエディターはその型（ブール・数値・文字列）を自動判定し、適切な入力コントロールを表示します。
+
+</Ja>

@@ -1,0 +1,117 @@
+---
+title: Performance Tuning
+description: Reduce lag and optimize your Minecraft server when using MC-Vector.
+category: troubleshooting
+order: 2
+---
+
+<En>
+
+Minecraft servers can become laggy as the world grows or player count increases. This guide covers the most effective ways to improve performance.
+
+## Choose an Optimized Server Software
+
+Vanilla Minecraft server is not optimized for performance. When creating a new server in MC-Vector, choose one of these alternatives:
+
+| Software | Best For |
+|---|---|
+| **Paper** | Most servers — significant performance improvements over Spigot |
+| **Purpur** | Advanced users who want extra customization on top of Paper |
+| **Fabric** | Mod servers — pair with `Lithium` and `FerriteCore` mods |
+
+## Adjust server.properties
+
+In MC-Vector, open the **Properties** tab to tweak these settings:
+
+- **`view-distance`** — Lower this value to reduce chunk rendering load. Default is `10`; try `6–8` for better performance.
+- **`simulation-distance`** — Controls how far entities are processed. Setting this to `4–6` can help on busy servers.
+- **`max-players`** — Set a reasonable limit for your hardware.
+
+## Reduce Entity Count
+
+Too many living entities (mobs, animals, item frames) is the most common cause of TPS drops.
+
+For Paper servers, edit `config/paper-global.yml` and `config/paper-world-defaults.yml`:
+
+- Lower `spawn-limits` in `bukkit.yml`
+- Reduce `entity-activation-range` in `spigot.yml`
+- Enable `per-player-mob-spawns` in `paper.yml`
+
+You can edit all these files directly in the **Files** tab of MC-Vector.
+
+## Pre-generate Chunks
+
+Chunk generation is CPU-intensive. Pre-generating the world before opening to players eliminates generation lag during exploration.
+
+Install the **Chunky** plugin via the **Plugins** tab in MC-Vector (available on Modrinth), then run:
+
+```
+/chunky radius 5000
+/chunky start
+```
+
+This will pre-generate a 5000-block radius around spawn.
+
+## Monitor Server Performance
+
+Use the in-game `/tps` command (on Paper/Spigot) to check Ticks Per Second. A healthy server runs at **20 TPS**. If TPS drops below 15, investigate plugins or entity counts.
+
+You can also watch resource usage in the **Dashboard** tab in MC-Vector, which updates every **2 seconds**.
+
+</En>
+
+<Ja>
+
+Minecraftサーバーはワールドの拡大やプレイヤー数の増加によって遅延が発生しやすくなります。このガイドでは最も効果的なパフォーマンス向上の方法を紹介します。
+
+## 最適化されたサーバーソフトウェアを選ぶ
+
+VanillaはパフォーマンスがSoptimzedされていません。MC-Vectorでサーバーを作成する際は以下の代替ソフトウェアをお勧めします：
+
+| ソフトウェア | 適した用途 |
+|------------|------------|
+| **Paper** | ほとんどのサーバー — Spigotより大幅な性能向上 |
+| **Purpur** | Paperに加えてさらなるカスタマイズを求める上級ユーザー |
+| **Fabric** | MODサーバー — `Lithium`や`FerriteCore`MODと組み合わせる |
+
+## server.propertiesの調整
+
+| プロパティ | デフォルト | 推奨値 | 効果 |
+|----------|---------|--------|------|
+| `view-distance` | `10` | `6〜8` | チャンク描画荷を軽減 |
+| `simulation-distance` | `10` | `4〜6` | エンティティ処理範囲を縮小 |
+| `max-players` | `20` | ハードに合わせる | 負荷の防止 |
+
+## エンティティ数の削減
+
+生き物（モブ、動物、アイテムエンティティ）を持った素材ブロックんが多すぎることがTPS低下の最大の原因です。
+
+Paperサーバーの場合、**Files**タブで以下の設定ファイルを編集します：
+
+| ファイル | 設定キー | 効果 |
+|------|---------|------|
+| `bukkit.yml` | `spawn-limits` | モブの最大表現数を下げる |
+| `spigot.yml` | `entity-activation-range` | AI処理範囲を縮小 |
+| `paper.yml` | `per-player-mob-spawns` | プレイヤーごとの公平なスポーン分配 |
+
+## チャンクの事前生成
+
+チャンク生成はCPU負荷が高い作業です。プレイヤーが入場する前にワールドを事前生成しておくことで、探索中の遅延を排除できます。
+
+MC-Vectorの**Plugins**タブで**Chunky**プラグイン（Modrinth対応）をインストール後、コンソールで実行：
+
+```
+/chunky radius 5000
+/chunky start
+```
+
+スポーン地点から半径5000ブロックの範囲を事前生成します。
+
+## サーバーパフォーマンスの監視
+
+Paper/SpigotサーバーではTPS（Ticks Per Second）を確認するために`/tps`コマンドを使用できます。健全なサーバーは**20 TPS**で動作します。TPSが15未満に落ちた場合は、プラグインやエンティティ数を調査してください。
+
+MC-Vectorの**Dashboard**タブでリソース使用率を監視することもできます（**2秒ごと**に更新）。
+
+</Ja>
+

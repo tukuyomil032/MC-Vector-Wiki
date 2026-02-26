@@ -1,0 +1,118 @@
+---
+title: Common Errors
+description: Solutions to the most frequent errors when running a Minecraft server with MC-Vector.
+category: troubleshooting
+order: 1
+---
+
+<En>
+
+This page covers common errors you may encounter when creating or running a Minecraft server with MC-Vector.
+
+## Server Fails to Start
+
+### `java.lang.OutOfMemoryError`
+
+**Cause:** The server does not have enough memory allocated.
+
+**Fix:** In MC-Vector, go to the server's **Settings** tab and increase the **Memory** value. Make sure your machine has enough free RAM.
+
+### `Address already in use`
+
+**Cause:** Another process is already using the port (default `25565`).
+
+**Fix:**
+1. Check if another Minecraft server is running on the same port.
+2. Go to the **Properties** tab in MC-Vector and change `server-port` to a different value (e.g. `25566`).
+
+### `EULA not accepted`
+
+**Cause:** When creating a server manually or if the automatic EULA acceptance fails, the server won't start.
+
+**Fix:** Open the **Files** tab, find `eula.txt`, and change `eula=false` to `eula=true`, then save.
+
+> **Note:** MC-Vector automatically accepts the EULA when creating a server through the app.
+
+## Connection Issues
+
+### `Connection refused`
+
+**Cause:** The server is not running, or a firewall is blocking the port.
+
+**Fix:**
+1. Make sure the server status shows **Online** in MC-Vector.
+2. Check that your firewall allows inbound connections on the server port.
+3. If you want to play with friends over the internet, see the [ngrok Tunnel](/docs/network-proxy/ngrok-tunnel) guide instead of configuring manual port forwarding.
+
+## Plugin / Mod Errors
+
+### `UnsupportedClassVersionError`
+
+**Cause:** The plugin or mod was compiled for a newer version of Java than what is currently running.
+
+**Fix:** Open the **Java Manager** in MC-Vector and switch to a newer Java version (e.g. Java 21), then restart the server.
+
+### Server crashes after installing a plugin/mod
+
+**Fix:**
+1. Go to the **Files** tab and navigate to the `plugins/` or `mods/` folder.
+2. Remove the newly added `.jar` file.
+3. Restart the server and check the `logs/latest.log` for the specific error message.
+
+</En>
+
+<Ja>
+
+MC-VectorでMinecraftサーバーを作成・起動する際に発生する主なエラーとその解決方法をまとめました。
+
+## サーバーが起動しない
+
+### `java.lang.OutOfMemoryError`
+
+**原因：** 割り当てられたメモリが不足しています。
+
+**解決：** MC-Vectorでサーバーの**General Settings**タブを開き、**Memory**の値を増やしてください。マシンに十分な空きRAMがあることを確認してください。
+
+### `Address already in use`
+
+**原因：** 別のプロセスがそのポート（デフォルト：`25565`）を使用中。
+
+**解決：**
+1. 同じポートで別のMinecraftサーバーが起動していないか確認。
+2. MC-Vectorの**Properties**タブで`server-port`を別の値（例：`25566`）に変更。
+
+### `EULA not accepted`
+
+**原因：** EULAに同意していないため起動できません。
+
+**解決：** **Files**タブで`eula.txt`を開き、`eula=false`を`eula=true`に変更して保存してください。
+
+> **注意：** MC-VectorでサーバーをするとEULAは自動的に同意されます。
+
+## 接続の問題
+
+### `Connection refused`
+
+**原因：** サーバーが起動していないか、ファイアウォールがポートをブロックしています。
+
+**解決：**
+1. MC-Vectorでサーバーのステータスが**Online**になっているか確認。
+2. ファイアウォールがサーバーポートへのインバウンドを許可しているか確認。
+3. インターネット越しで遊ぶ場合は[ngrokトンネル](/docs/network-proxy/ngrok-tunnel)ガイドを参照してください。
+
+## プラグイン/MODのエラー
+
+### `UnsupportedClassVersionError`
+
+**原因：** プラグインまたはMODが現在起動中のJavaより新しいバージョン向けにコンパイルされています。
+
+**解決：** MC-Vectorの**Java Manager**でJava 21などの新しいバージョンに切り替えてからサーバーを再起動してください。
+
+### プラグイン/MOD導入後にサーバーがクラッシュする
+
+**解決：**
+1. **Files**タブで`plugins/`または`mods/`フォルダーを開きます。
+2. 新しく追加した`.jar`ファイルを削除します。
+3. サーバーを再起動し、`logs/latest.log`でエラーの詳細を確認してください。
+
+</Ja>

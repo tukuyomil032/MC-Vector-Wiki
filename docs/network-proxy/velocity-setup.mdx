@@ -1,0 +1,128 @@
+---
+title: Proxy Setup
+description: Configure a proxy network using Velocity, Waterfall, or BungeeCord with MC-Vector.
+category: network-proxy
+order: 2
+---
+
+<En>
+
+MC-Vector supports creating and managing proxy servers — **Velocity**, **Waterfall**, and **BungeeCord**. This guide walks through setting up a Velocity proxy network.
+
+## What is a Proxy?
+
+A Minecraft proxy connects multiple backend servers together, allowing players to switch between servers (Lobby → Survival → Minigames) without disconnecting.
+
+## Prerequisites
+
+- At least **two servers**: one proxy (Velocity) and one backend (e.g., Paper).
+- Backend servers on different ports (e.g., `25566`, `25567`).
+
+## Step 1: Create the Velocity Server
+
+1. Click **+ Add Server** in MC-Vector.
+2. Select **Velocity** as the software type.
+3. Set the port to `25577` (Velocity's default).
+4. Click **Create**.
+
+## Step 2: Configure velocity.toml
+
+1. Open the Velocity server in MC-Vector and go to **Files**.
+2. Open `velocity.toml`.
+3. Add your backend servers in the `[servers]` section:
+
+```toml
+[servers]
+lobby = "127.0.0.1:25566"
+survival = "127.0.0.1:25567"
+
+try = ["lobby"]
+```
+
+4. Note the secret in `forwarding.secret` — you will need it in Step 3.
+
+## Step 3: Configure Backend Servers
+
+For each backend server:
+
+1. Go to their **Properties** tab and set:
+   - `online-mode` = `false`
+   - `server-port` = the port you defined in `velocity.toml`
+2. For **Paper/Purpur** backends, open `config/paper-global.yml` in **Files** and enable:
+
+```yaml
+proxies:
+  velocity:
+    enabled: true
+    online-mode: true
+    secret: "<your forwarding.secret value>"
+```
+
+## Step 4: Start the Network
+
+1. Start all **backend servers** first.
+2. Once they are online, start the **Velocity proxy**.
+3. Connect to `localhost:25577` in Minecraft (or your server's IP at port `25577`).
+
+</En>
+
+<Ja>
+
+MC-Vectorでは**Velocity**、**Waterfall**、**BungeeCord**などのプロキシサーバーを作成・管理できます。ここではVelocityプロキシネットワークのセットアップ手順を説明します。
+
+## プロキシとは
+
+Minecraftプロキシは複数のバックエンドサーバーをつなぎ、切断することなく（ロビー → サバイバル → ミニゲームなど）サーバー間を移動できるようにします。
+
+## 前提条件
+
+- 最低**2台のサーバー**：プロキシ（Velocity）とバックエンド（例：Paper）。
+- バックエンドサーバーは異なるポートで動作（例：`25566`、`25567`）。
+
+## ステップ1：Velocityサーバーの作成
+
+1. MC-Vectorで**+ Add Server**をクリック。
+2. ソフトウェアタイプとして**Velocity**を選択。
+3. ポートを`25577`（Velocityのデフォルト）に設定。
+4. **Create**をクリック。
+
+## ステップ2：velocity.tomlの設定
+
+1. VelocityサーバーをMC-Vectorで開き、**Files**タブを開きます。
+2. `velocity.toml`を開きます。
+3. `[servers]`セクションにバックエンドサーバーを追加：
+
+```toml
+[servers]
+lobby = "127.0.0.1:25566"
+survival = "127.0.0.1:25567"
+
+try = ["lobby"]
+```
+
+4. `forwarding.secret`ファイルのシークレット値を控えます（ステップ3で使います）。
+
+## ステップ3：バックエンドサーバーの設定
+
+各バックエンドサーバーで：
+
+1. **Properties**タブで以下を設定：
+   - `online-mode` = `false`
+   - `server-port` = `velocity.toml`で定義したポート
+2. **Paper/Purpur**の場合は**Files**タブで`config/paper-global.yml`を開き、以下を有効化：
+
+```yaml
+proxies:
+  velocity:
+    enabled: true
+    online-mode: true
+    secret: "<forwarding.secretの値>"
+```
+
+## ステップ4：ネットワークの起動
+
+1. まず**バックエンドサーバー**をすべて起動。
+2. 起動を確認したら**Velocityプロキシ**を起動。
+3. Minecraftで`localhost:25577`に接続します。
+
+</Ja>

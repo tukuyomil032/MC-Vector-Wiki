@@ -1,0 +1,588 @@
+---
+title: Developer Setup
+description: Project structure, config file paths, and development environment setup for MC-Vector.
+category: developer
+order: 1
+---
+
+<En>
+
+## Overview
+
+MC-Vector is a **Tauri v2** desktop application built with:
+
+| Layer | Technology |
+|-------|-----------|
+| Frontend | React 19 + Vite + TypeScript |
+| Styling | Tailwind CSS |
+| Backend | Rust (Tauri commands) |
+| IPC | Tauri `invoke()` — no REST or WebSocket API |
+
+All communication between the React frontend and Rust backend goes through Tauri's built-in IPC mechanism, **not** HTTP.
+
+## Prerequisites
+
+Make sure the following are installed before you begin:
+
+| Tool | Version | Purpose |
+|------|---------|---------|
+| **Node.js** | v18+ | JavaScript runtime |
+| **pnpm** | latest | Package manager |
+| **Rust** | v1.77.2+ | Backend compilation |
+| **Cargo** | (bundled with Rust) | Rust build tool |
+
+Install all prerequisites (Node.js, pnpm, and Rust):
+
+```bash
+# Install Node.js & pnpm (macOS with Homebrew)
+brew install node pnpm
+
+# Or on Linux/macOS without Homebrew, install Node.js from https://nodejs.org/
+# Then install pnpm globally:
+npm install -g pnpm
+
+# Install Rust via rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Activate Rust environment
+source $HOME/.cargo/env
+```
+
+**Windows users:** Install [Node.js](https://nodejs.org/) from the official installer, then run `npm install -g pnpm` and `rustup-init` from https://rustup.rs/
+
+## Getting Started
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/tukuyomil032/MC-Vector.git
+cd MC-Vector
+
+# 2. Install JS dependencies
+pnpm install
+
+# 3. Launch development server (hot-reload for both frontend and backend)
+pnpm tauri dev
+
+# 4. Build production binary (when ready to ship)
+pnpm tauri build
+```
+
+> **First run:** The Rust crate compilation will take a few minutes. Subsequent runs use the incremental build cache and start faster.
+
+Platform-specific bundles are output to:
+
+```
+src-tauri/target/release/bundle/
+ ├── dmg/          ← macOS DMG
+ ├── macos/        ← macOS .app
+ └── nsis/         ← Windows NSIS installer (.exe)
+```
+
+## Project Structure
+
+```
+MC-Vector/
+├── src/                              # Frontend (React + Vite)
+│   ├── App.tsx                       # Root component & view router
+│   ├── main.tsx                      # Vite / React entry point
+│   ├── index.css                     # Global styles (Tailwind)
+│   ├── vite-env.d.ts                 # Vite type declarations + SVG module
+│   ├── assets/
+│   │   └── icons/                    # SVG icon files (folder, file, trash…)
+│   ├── lib/                          # Tauri IPC command wrappers
+│   │   ├── server-commands.ts        # Server start/stop/restart
+│   │   ├── backup-commands.ts        # Backup operations
+│   │   ├── file-commands.ts          # File system operations
+│   │   ├── plugin-commands.ts        # Plugin/mod management
+│   │   ├── java-commands.ts          # Java detection & management
+│   │   ├── ngrok-commands.ts         # ngrok tunnel control
+│   │   ├── proxy-commands.ts         # Proxy server setup
+│   │   ├── config-commands.ts        # Config read/write
+│   │   └── update-commands.ts        # App auto-update
+│   └── renderer/
+│       ├── components/               # Feature UI components
+│       │   ├── DashboardView.tsx     # CPU/RAM graphs (Recharts)
+│       │   ├── ConsoleView.tsx       # Live console + ANSI output
+│       │   ├── FilesView.tsx         # File manager (Monaco editor)
+│       │   ├── BackupsView.tsx       # Backup creation & restore
+│       │   ├── PluginBrowser.tsx     # Modrinth / Hangar browser
+│       │   ├── UsersView.tsx         # Whitelist / ban / op management
+│       │   ├── ProxySetupView.tsx    # Velocity / Waterfall setup
+│       │   ├── ProxyHelpView.tsx     # Proxy configuration guide
+│       │   ├── AddServerModal.tsx    # New server wizard modal
+│       │   ├── NgrokGuideView.tsx    # ngrok guide view
+│       │   ├── SettingsWindow.tsx    # App settings (theme, etc.)
+│       │   ├── JavaManagerModal.tsx  # JRE download & management
+│       │   ├── Toast.tsx             # Toast notification component
+│       │   ├── ToastProvider.tsx     # Toast context provider
+│       │   └── properties/
+│       │       ├── PropertiesView.tsx           # Quick server.properties editor
+│       │       ├── AdvancedSettingsWindow.tsx   # Full 60+ property editor
+│       │       └── ServerSettings.tsx           # Server meta settings
+│       ├── shared/
+│       │   ├── propertiesData.ts     # 60+ server.properties definitions
+│       │   └── server declaration.ts # MinecraftServer & AppView types
+│       └── constants/
+│           └── versionOptions.ts     # Supported Minecraft version list
+│
+└── src-tauri/                        # Rust backend (Tauri)
+    ├── tauri.conf.json               # Tauri app configuration
+    ├── Cargo.toml                    # Rust dependencies
+    └── src/
+        ├── main.rs                   # Entry point
+        └── commands/                 # Tauri command handlers
+            ├── server.rs             # Server process management
+            ├── backup.rs             # Backup / restore
+            ├── file_utils.rs         # File operations
+            ├── java.rs               # Java runtime detection
+            ├── ngrok.rs              # ngrok integration
+            ├── download.rs           # Server .jar download
+            └── process_stats.rs      # CPU/RAM monitoring
+```
+
+## Config & Data File Paths
+
+When MC-Vector creates servers and stores application data, it uses the following OS-specific paths:
+
+| Platform | Base Path |
+|----------|-----------|
+| **macOS** | `~/Library/Application Support/MC-Vector/` |
+| **Windows** | `C:\Users\<username>\AppData\Roaming\MC-Vector\` |
+
+### Server data layout
+
+```
+MC-Vector/
+└── servers/
+    └── <server-name>/
+        ├── server.jar          ← Downloaded server software
+        ├── server.properties
+        ├── eula.txt
+        ├── world/              ← World data
+        ├── plugins/ or mods/   ← Installed plugins/mods
+        └── backups/            ← ZIP backups created via the app
+            └── backup-2026-02-26T12-00-00.zip
+```
+
+### App config
+
+```
+MC-Vector/
+└── config.json    ← Stores server list, ngrok token, theme preference, etc.
+```
+
+## Architecture Notes
+
+- **Tauri IPC** — The frontend calls `invoke("command_name", { args })` to interact with Rust. See `src/lib/*.ts` for all available commands.
+- **No REST API** — There is no HTTP server exposed. All communication is local Tauri IPC.
+- **No auto-backup** — Backups are created manually by the user from the Backups tab.
+- **Dashboard** — Uses [Recharts](https://recharts.org/) to display CPU/RAM graphs updated every 2 seconds via Tauri events.
+- **Console** — ANSI 16-color, auto-scrolls when within 120px of bottom, 2000-line buffer.
+
+## Writing a New Tauri Command
+
+### 1. Define the command in Rust
+
+Add a new file under `src-tauri/src/commands/` or append to an existing one:
+
+```rust
+// src-tauri/src/commands/example.rs
+use tauri::State;
+use crate::state::AppState;
+
+#[tauri::command]
+pub async fn get_server_count(
+    state: State<'_, AppState>,
+) -> Result<usize, String> {
+    let servers = state.servers.lock().await;
+    Ok(servers.len())
+}
+```
+
+### 2. Register in `main.rs`
+
+```rust
+// src-tauri/src/main.rs
+.invoke_handler(tauri::generate_handler![
+    // ... existing commands ...
+    commands::example::get_server_count,
+])
+```
+
+### 3. Declare the permission (Tauri v2)
+
+Tauri v2 requires explicit capability declarations. Edit `src-tauri/capabilities/default.json`:
+
+```json
+{
+  "identifier": "default",
+  "description": "Default capabilities",
+  "permissions": [
+    "core:default",
+    "shell:allow-open"
+  ]
+}
+```
+
+### 4. Call from the React frontend
+
+Wrap the `invoke` call in a typed helper in `src/lib/`:
+
+```typescript
+// src/lib/server-commands.ts
+import { invoke } from "@tauri-apps/api/core";
+
+export async function getServerCount(): Promise<number> {
+  return invoke<number>("get_server_count");
+}
+```
+
+Then use it in any component:
+
+```tsx
+// src/renderer/components/Dashboard.tsx
+import { getServerCount } from "@/lib/server-commands";
+
+const count = await getServerCount();
+console.log(`Managing ${count} servers`);
+```
+
+## Console — Implementation Details
+
+Server stdout/stderr is captured by a tokio task in Rust and emitted as Tauri events:
+
+```rust
+// src-tauri/src/commands/server.rs
+tokio::spawn(async move {
+    let reader = BufReader::new(stdout);
+    for line in reader.lines() {
+        let Ok(line) = line else { break };
+        app_handle
+            .emit("server-log", LogPayload {
+                server_id: id.clone(),
+                line: line.trim_end().to_string(),
+            })
+            .ok();
+    }
+});
+```
+
+The React console component subscribes and enforces the 2,000-line buffer:
+
+```typescript
+// src/renderer/components/ConsoleView.tsx
+import { listen } from "@tauri-apps/api/event";
+
+const unlisten = await listen<LogPayload>("server-log", ({ payload }) => {
+  if (payload.server_id !== currentServerId) {
+    return;
+  }
+
+  setLines((prev) => {
+    const next = [...prev, payload.line];
+    return next.length > 2000 ? next.slice(-2000) : next;   // buffer cap
+  });
+});
+
+// cleanup on unmount
+return () => unlisten();
+```
+
+Auto-scroll logic (120 px threshold):
+
+```typescript
+const handleScroll = () => {
+  if (!containerRef.current) {
+    return;
+  }
+  const { scrollTop, scrollHeight, clientHeight } = containerRef.current;
+  isAtBottomRef.current = scrollHeight - scrollTop - clientHeight < 120;
+};
+
+useEffect(() => {
+  if (isAtBottomRef.current) {
+    containerRef.current?.scrollTo({ top: containerRef.current.scrollHeight });
+  }
+}, [lines]);
+```
+
+## Useful Commands
+
+| Command | Description |
+|---------|-------------|
+| `pnpm tauri dev` | Start dev server with hot-reload |
+| `pnpm tauri build` | Build production binary |
+| `pnpm lint` | Run ESLint |
+| `pnpm format` | Prettier format |
+| `cargo test` | Run Rust unit tests (in `src-tauri/`) |
+| `cargo clippy` | Rust linter |
+| `cargo doc --open` | Generate and open Rust API docs |
+
+## Contributing
+
+1. Fork the repo and create a feature branch:
+
+```bash
+git checkout -b feat/my-awesome-feature
+```
+
+2. Implement your change, then verify:
+
+```bash
+# Frontend checks
+pnpm lint && pnpm format --check
+
+# Rust checks
+cd src-tauri && cargo clippy -- -D warnings && cargo test
+```
+
+3. Open a pull request against `main` with a description of what you changed and why.
+
+</En>
+
+<Ja>
+
+## 概要
+
+MC-Vectorは**Tauri v2**を使ったデスクトップアプリケーションです。
+
+| レイヤー | 技術スタック |
+|--------|-----------|
+| フロントエンド | React 19 + Vite + TypeScript |
+| スタイリング | Tailwind CSS |
+| バックエンド | Rust（Tauriコマンド） |
+| IPC | Tauri `invoke()` — REST/WebSocket APIなし |
+
+ReactフロントエンドとRustバックエンドの通信はすべてTauriのIPC（プロセス間通信）を使用しており、HTTPは使用していません。
+
+## 必要なツール
+
+| ツール | バージョン | 用途 |
+|------|---------|------|
+| **Node.js** | v18以上 | JavaScriptランタイム |
+| **pnpm** | 最新版 | パッケージマネージャー |
+| **Rust** | v1.77.2以上 | バックエンドのコンパイル |
+| **Cargo** | Rustに同梱 | Rustビルドツール |
+
+Rustは[rustup.rs](https://rustup.rs/)からインストールしてください：
+
+```bash
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+```
+
+## セットアップ手順
+
+```bash
+# 1. リポジトリをクローン
+git clone https://github.com/tukuyomil032/MC-Vector.git
+cd MC-Vector
+
+# 2. JS依存関係をインストール
+pnpm install
+
+# 3. 開発サーバーを起動（フロントエンド・バックエンド双方にホットリロードあり）
+pnpm tauri dev
+
+# 4. プロダクションビルド（リリース時）
+pnpm tauri build
+```
+
+> **初回起動時：** Rustクレートのコンパイルに数分かかります。2回目以降はインクリメンタルビルドキャッシュが使われるため高速に起動します。
+
+プラットフォーム別のバンドルは以下に出力されます：
+
+```
+src-tauri/target/release/bundle/
+├── dmg/          ← macOS DMG
+├── macos/        ← macOS .app
+└── nsis/         ← Windows NISISインストーラー (.exe)
+```
+
+## プロジェクト構成
+
+```
+MC-Vector/
+├── src/                              # フロントエンド (React + Vite)
+│   ├── App.tsx                       # ルートコンポーネント & ビュールーター
+│   ├── main.tsx                      # Vite / React エントリポイント
+│   ├── index.css                     # グローバルスタイル (Tailwind)
+│   ├── vite-env.d.ts                 # Vite型宣言 + SVGモジュール定義
+│   ├── assets/
+│   │   └── icons/                    # SVGアイコンファイル
+│   ├── lib/                          # Tauri IPC コマンドラッパー
+│   │   ├── server-commands.ts        # サーバー起動・停止・再起動
+│   │   ├── backup-commands.ts        # バックアップ操作
+│   │   ├── file-commands.ts          # ファイルシステム操作
+│   │   ├── plugin-commands.ts        # プラグイン・MOD管理
+│   │   ├── java-commands.ts          # Java検出・管理
+│   │   ├── ngrok-commands.ts         # ngrokトンネル操作
+│   │   ├── proxy-commands.ts         # プロキシサーバー設定
+│   │   ├── config-commands.ts        # 設定の読み書き
+│   │   └── update-commands.ts        # アプリ自動アップデート
+│   └── renderer/
+│       ├── components/               # 機能UIコンポーネント
+│       │   ├── DashboardView.tsx     # CPU/RAMグラフ (Recharts)
+│       │   ├── ConsoleView.tsx       # ライブコンソール + ANSI出力
+│       │   ├── FilesView.tsx         # ファイルマネージャー (Monaco)
+│       │   ├── BackupsView.tsx       # バックアップ作成・復元
+│       │   ├── PluginBrowser.tsx     # Modrinth / Hangar ブラウザ
+│       │   ├── UsersView.tsx         # ホワイトリスト・BAN・OP管理
+│       │   ├── ProxySetupView.tsx    # Velocity / Waterfall 設定
+│       │   ├── ProxyHelpView.tsx     # プロキシ設定ガイド
+│       │   ├── AddServerModal.tsx    # 新規サーバー作成ウィザード
+│       │   ├── NgrokGuideView.tsx    # ngrokガイドビュー
+│       │   ├── SettingsWindow.tsx    # アプリ設定 (テーマ等)
+│       │   ├── JavaManagerModal.tsx  # JREダウンロード・管理
+│       │   ├── Toast.tsx             # トースト通知コンポーネント
+│       │   ├── ToastProvider.tsx     # トーストコンテキストプロバイダー
+│       │   └── properties/
+│       │       ├── PropertiesView.tsx           # 簡易server.propertiesエディタ
+│       │       ├── AdvancedSettingsWindow.tsx   # 60+プロパティ詳細エディタ
+│       │       └── ServerSettings.tsx           # サーバーメタ設定
+│       ├── shared/
+│       │   ├── propertiesData.ts     # 60以上のserver.properties定義
+│       │   └── server declaration.ts # MinecraftServer & AppView型定義
+│       └── constants/
+│           └── versionOptions.ts     # 対応Minecraftバージョンリスト
+│
+└── src-tauri/                        # Rustバックエンド (Tauri)
+    ├── tauri.conf.json               # Tauriアプリ設定
+    ├── Cargo.toml                    # Rust依存関係
+    └── src/
+        ├── main.rs                   # エントリポイント
+        └── commands/                 # Tauriコマンドハンドラー
+            ├── server.rs             # サーバープロセス管理
+            ├── backup.rs             # バックアップ・復元
+            ├── file_utils.rs         # ファイル操作
+            ├── java.rs               # Java ランタイム検出
+            ├── ngrok.rs              # ngrok統合
+            ├── download.rs           # サーバー .jar ダウンロード
+            └── process_stats.rs      # CPU/RAM監視
+```
+
+## 設定・データファイルのパス
+
+MC-Vectorがサーバーやアプリデータを保存するパスはOSによって異なります：
+
+| プラットフォーム | ベースパス |
+|-------------|---------|
+| **macOS** | `~/Library/Application Support/MC-Vector/` |
+| **Windows** | `C:\Users\<ユーザー名>\AppData\Roaming\MC-Vector\` |
+
+### サーバーデータのレイアウト
+
+```
+MC-Vector/
+└── servers/
+    └── <サーバー名>/
+        ├── server.jar          ← ダウンロードされたサーバーソフト
+        ├── server.properties
+        ├── eula.txt
+        ├── world/              ← ワールドデータ
+        ├── plugins/ or mods/   ← インストール済みプラグイン/Mod
+        └── backups/            ← アプリから作成したZIPバックアップ
+            └── backup-2026-02-26T12-00-00.zip
+```
+
+### アプリ設定ファイル
+
+```
+MC-Vector/
+└── config.json    ← サーバーリスト、ngrokトークン、テーマ設定などを保存
+```
+
+## アーキテクチャメモ
+
+- **Tauri IPC** — フロントエンドは `invoke("command_name", { args })` でRustと通信します。利用可能なコマンドは `src/lib/*.ts` を参照してください。
+- **REST APIなし** — HTTPサーバーは一切公開されていません。通信はすべてTauriのIPCのみです。
+- **自動バックアップなし** — バックアップはユーザーがバックアップタブから手動で作成します。
+- **ダッシュボード** — [Recharts](https://recharts.org/)でCPU/RAMグラフを表示。2秒ごとにTauriイベントで更新されます。
+- **コンソール** — ANSI 16色対応、底部から120px以内で自動スクロール、最大2000行バッファ。
+
+## Tauriコマンドの追加方法
+
+### 1. Rustでコマンドを定義
+
+`src-tauri/src/commands/`に新しいファイルを追加するか、既存ファイルに追記します：
+
+```rust
+// src-tauri/src/commands/example.rs
+use tauri::State;
+use crate::state::AppState;
+
+#[tauri::command]
+pub async fn get_server_count(
+    state: State<'_, AppState>,
+) -> Result<usize, String> {
+    let servers = state.servers.lock().await;
+    Ok(servers.len())
+}
+```
+
+### 2. `main.rs`に登録
+
+```rust
+.invoke_handler(tauri::generate_handler![
+    commands::example::get_server_count,
+])
+```
+
+### 3. Reactフロントエンドから呼び出す
+
+```typescript
+// src/lib/server-commands.ts
+import { invoke } from "@tauri-apps/api/core";
+
+export async function getServerCount(): Promise<number> {
+  return invoke<number>("get_server_count");
+}
+```
+
+## コンソール — 実装の詳細
+
+サーバーの標準出力はRust側のtokioタスクでキャプチャされ、Tauriイベントとして送信されます：
+
+```rust
+tokio::spawn(async move {
+    for line in reader.lines() {
+        let Ok(line) = line else { break };
+        app_handle.emit("server-log", LogPayload {
+            server_id: id.clone(),
+            line: line.trim_end().to_string(),
+        }).ok();
+    }
+});
+```
+
+Reactコンポーネントはイベントをリッスンし、2,000行バッファを維持します：
+
+```typescript
+const unlisten = await listen<LogPayload>("server-log", ({ payload }) => {
+  if (payload.server_id !== currentServerId) {
+    return;
+  }
+  setLines((prev) => {
+    const next = [...prev, payload.line];
+    return next.length > 2000 ? next.slice(-2000) : next;
+  });
+});
+```
+
+## コントリビュート
+
+1. リポジトリをフォークしてブランチを作成：
+
+```bash
+git checkout -b feat/my-feature
+```
+
+2. 変更後、以下を実行：
+
+```bash
+pnpm lint && pnpm format --check
+cd src-tauri && cargo clippy -- -D warnings && cargo test
+```
+
+3. `main`ブランチに対してプルリクエストを作成し、変更内容と理由を説明してください。
+
+</Ja>

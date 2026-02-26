@@ -1,0 +1,82 @@
+---
+title: Plugins & Mods
+description: Install and manage plugins and mods directly from MC-Vector.
+category: features
+order: 2
+---
+
+<En>
+
+MC-Vector features a powerful built-in plugin and mod browser that integrates directly with [Modrinth](https://modrinth.com/) and [Hangar](https://hangar.papermc.io/).
+
+## Supported Platforms
+
+| Platform | Server Type |
+|----------|-------------|
+| **Modrinth** | Fabric, Forge, NeoForge mods and some plugins |
+| **Hangar** | Paper and LeafMC plugins |
+
+*(CurseForge and Spigot support are planned for future updates.)*
+
+## Installing Plugins/Mods
+
+1. Navigate to the **Plugins/Mods** tab in your server's control panel.
+2. Use the search bar to find the plugin or mod you want.
+3. Filter by **Platform** (Modrinth/Hangar) and **Type** (Mod/Plugin).
+4. Click the **Install** button on the desired result.
+
+MC-Vector automatically downloads the `.jar` and places it in the correct directory (`plugins/` or `mods/`).
+
+> **Multi-server note:** If you have multiple servers, only the **currently selected server** will receive the installation.
+
+## Duplicate Detection
+
+If the same file already exists in your server folder, MC-Vector will prompt you:
+
+- **Overwrite** — Replace the existing file.
+- **Update** — Replace with a newer detected version.
+- **Skip** — Cancel the installation.
+
+## Dependency Resolution
+
+When installing from Modrinth, MC-Vector automatically identifies and suggests required dependencies so your mods work out of the box.
+
+</En>
+
+<Ja>
+
+MC-Vectorには[Modrinth](https://modrinth.com/)と[Hangar](https://hangar.papermc.io/)に直接対応した強力なプラグイン・Modブラウザが内蔵されています。
+
+## 対応プラットフォーム
+
+| プラットフォーム | 対象サーバータイプ |
+|-------------|----------------|
+| **Modrinth** | Fabric、Forge、NeoForge Mod、一部のプラグイン |
+| **Hangar** | Paper、LeafMCのプラグイン |
+
+*(CurseForge、Spigotへの対応は将来のアップデートで予定されています。)*
+
+## プラグイン/Modのインストール
+
+1. サーバーのコントロールパネルで **Plugins/Mods** タブを開きます。
+2. 検索バーで目的のプラグインやModを検索します。
+3. **プラットフォーム**（Modrinth/Hangar）や**タイプ**（Mod/Plugin）でフィルタリングできます。
+4. 目的のものの**Install**ボタンをクリックします。
+
+MC-Vectorが自動的に`.jar`ファイルをダウンロードして正しいディレクトリ（`plugins/`または`mods/`）に配置します。
+
+> **複数サーバーに注意：** 複数のサーバーがある場合、Installボタンを押すと**現在選択中のサーバー**にのみインストールされます。
+
+## 重複検出
+
+同じファイルがすでにサーバーフォルダに存在する場合、MC-Vectorは選択肢を表示します：
+
+- **Overwrite** — 既存ファイルを上書き。
+- **Update** — 新しいバージョンが検出された場合に更新。
+- **Skip** — インストールをキャンセル。
+
+## 依存関係の自動解決
+
+Modrinthからインストールする場合、MC-Vectorは必要な依存関係を自動的に検出して提案するため、Modがすぐに動作します。
+
+</Ja>

@@ -1,26 +1,190 @@
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
+/* Wiki Custom Theme Variables */
 :root {
+  /* Light Theme (Fallback, but we'll force dark mode mostly) */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+  --primary: #00e599;    /* Electrobun Cyan/Green */
+  --primary-foreground: #000000;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+  --surface: #f8fafc;
+  --sidebar-bg: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Dark Theme - Electrobun Style */
+    --background: #0b0b0e; /* Very dark near-black */
+    --foreground: #e2e8f0; /* Light gray text */
+    --primary: #00e599;    /* Cyan/Green accent */
+    --primary-foreground: #000000;
+    --muted: #131318;      /* Very dark gray for code blocks etc */
+    --muted-foreground: #888888; /* Dimmed text */
+    --border: #222228;     /* Subtle borders */
+    --surface: #0f0f14;    /* Card background */
+    --sidebar-bg: #0b0b0e;
+  }
+}
+
+/* Force dark mode for this specific design if needed, or just rely on system */
+.dark {
+  --background: #0b0b0e;
+  --foreground: #e2e8f0;
+  --primary: #00e599;
+  --primary-foreground: #000000;
+  --muted: #131318;
+  --muted-foreground: #888888;
+  --border: #222228;
+  --surface: #0f0f14;
+  --sidebar-bg: #0b0b0e;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-surface: var(--surface);
+  --color-sidebar-bg: var(--sidebar-bg);
+
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #333;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Typography overrides for Electrobun style */
+.prose {
+  --tw-prose-body: var(--foreground);
+  --tw-prose-headings: #ffffff;
+  --tw-prose-links: var(--primary);
+  --tw-prose-bold: #ffffff;
+  --tw-prose-counters: var(--muted-foreground);
+  --tw-prose-bullets: var(--muted-foreground);
+  --tw-prose-hr: var(--border);
+  --tw-prose-quotes: var(--foreground);
+  --tw-prose-quote-borders: var(--border);
+  --tw-prose-captions: var(--muted-foreground);
+  --tw-prose-code: var(--primary);
+  --tw-prose-pre-code: var(--foreground);
+  --tw-prose-pre-bg: var(--muted);
+  --tw-prose-th-borders: var(--border);
+  --tw-prose-td-borders: var(--border);
+}
+
+.prose pre {
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.prose pre code {
+  white-space: pre !important;
+  word-break: normal !important;
+  overflow-wrap: normal !important;
+}
+
+.prose code {
+  background-color: var(--muted);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+  font-weight: 400;
+}
+
+.prose code::before,
+.prose code::after {
+  content: "";
+}
+
+
 
 body {
   background: var(--background);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 15% 5%,  rgba(99,102,241,0.04) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 50% at 85% 95%, rgba(0,229,153,0.03) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(59,130,246,0.02) 0%, transparent 60%);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* ─── Highlight.js dark theme ─────────────────────────────────────────────── */
+.hljs { color: #abb2bf; }
+.hljs-comment,.hljs-quote                       { color: #5c6370; font-style: italic; }
+.hljs-doctag,.hljs-keyword,.hljs-formula        { color: #c678dd; }
+.hljs-section,.hljs-name,.hljs-selector-tag,
+.hljs-deletion,.hljs-subst                      { color: #e06c75; }
+.hljs-literal                                   { color: #56b6c2; }
+.hljs-string,.hljs-regexp,.hljs-addition,
+.hljs-attribute,.hljs-meta-string               { color: #98c379; }
+.hljs-built_in,.hljs-class .hljs-title          { color: #e6c07b; }
+.hljs-attr,.hljs-variable,.hljs-template-variable,
+.hljs-type,.hljs-selector-class,.hljs-selector-attr,
+.hljs-selector-pseudo,.hljs-number              { color: #d19a66; }
+.hljs-symbol,.hljs-bullet,.hljs-link,
+.hljs-meta,.hljs-selector-id,.hljs-title        { color: #61aeee; }
+.hljs-emphasis                                  { font-style: italic; }
+.hljs-strong                                    { font-weight: bold; }
+.hljs-link                                      { text-decoration: underline; }
+
+/* ─── Card spinning border animation ─────────────────────────────────────── */
+@keyframes card-bg-spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.card-spinning-bg {
+  position: absolute;
+  inset: -150%;
+  background: conic-gradient(
+    from 0deg,
+    transparent 72%,
+    #60a5fa    78%,
+    #818cf8    84%,
+    #00e599    90%,
+    #60a5fa    96%,
+    transparent 100%
+  );
+  animation: card-bg-spin 4s linear infinite;
+  pointer-events: none;
+}
+
+/* ─── Sidebar active item animated border ─────────────────────────────────── */
+@keyframes sidebar-border-glow {
+  0%   { box-shadow: -2px 0 8px 0 #7c3aed, inset -2px 0 0 0 #7c3aed; border-color: #7c3aed; }
+  25%  { box-shadow: -2px 0 8px 0 #3b82f6, inset -2px 0 0 0 #3b82f6; border-color: #3b82f6; }
+  50%  { box-shadow: -2px 0 8px 0 #00e599, inset -2px 0 0 0 #00e599; border-color: #00e599; }
+  75%  { box-shadow: -2px 0 8px 0 #8b5cf6, inset -2px 0 0 0 #8b5cf6; border-color: #8b5cf6; }
+  100% { box-shadow: -2px 0 8px 0 #7c3aed, inset -2px 0 0 0 #7c3aed; border-color: #7c3aed; }
+}
+
+.sidebar-active-link {
+  animation: sidebar-border-glow 3s ease-in-out infinite;
+  border-left-width: 2px;
+  border-left-style: solid;
+  color: white !important;
+  font-weight: 500;
 }

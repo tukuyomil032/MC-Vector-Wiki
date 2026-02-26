@@ -1,0 +1,97 @@
+---
+title: Backup & Restore
+description: Create and restore manual backups of your Minecraft server.
+category: features
+order: 3
+---
+
+<En>
+
+MC-Vector provides a built-in backup system. All backups are **manual** — there is no automatic or scheduled backup feature.
+
+## Creating a Backup
+
+1. Open your server and navigate to the **Backups** tab.
+2. Choose a compression level:
+
+| Level | Speed | File Size |
+|-------|-------|-----------|
+| 1 | Fastest | Largest |
+| 5 | Balanced | Medium |
+| 9 | Slowest | Smallest |
+
+3. Click **Create Backup**.
+
+MC-Vector generates a `.zip` archive of your server files.
+
+## Where Backups are Saved
+
+| Platform | Path |
+|----------|-----------|
+| **macOS** | `~/Library/Application Support/MC-Vector/servers/<name>/backups/` |
+| **Windows** | `C:\Users\<username>\AppData\Roaming\MC-Vector\servers\<name>\backups\` |
+
+## Restoring a Backup
+
+<div className="bg-amber-900/20 border border-amber-500/50 rounded-md p-4 my-6">
+<div className="text-amber-400 font-bold mb-1">⚠️ Warning</div>
+<div className="text-sm text-gray-300">Restoring a backup will overwrite your current server files. Stop the server first.</div>
+</div>
+
+1. Go to the **Backups** tab.
+2. Find the backup you want to restore.
+3. Click **Restore** and confirm the dialog.
+
+Once restored, start the server to resume from the backup.
+
+## Deleting Backups
+
+Click the trash icon next to any backup in the **Backups** tab to delete it and free up disk space.
+
+</En>
+
+<Ja>
+
+MC-Vectorにはバックアップ機能が内蔵されています。バックアップはすべて**手動**で行います—自動バックアップ機能はありません。
+
+## バックアップの作成
+
+1. サーバーを開き、**Backups**タブを開きます。
+2. 圧縮レベルを選びます：
+
+| レベル | 這度 | ファイルサイズ |
+|------|------|----------|
+| 1 | 最速 | 最大 |
+| 5 | バランス | 中程度 |
+| 9 | 最遅 | 最小 |
+
+3. **Create Backup** をクリックします。
+
+MC-Vectorがサーバーファイルの`.zip`アーカイブを生成します。
+
+## バックアップの保存先
+
+| OS | パス |
+|----|----|
+| **macOS** | `~/Library/Application Support/MC-Vector/servers/<名前>/backups/` |
+| **Windows** | `C:\Users\<ユーザー名>\AppData\Roaming\MC-Vector\servers\<名前>\backups\` |
+
+## バックアップの復元
+
+<div className="bg-amber-900/20 border border-amber-500/50 rounded-md p-4 my-6">
+<div className="text-amber-400 font-bold mb-1">⚠️ 警告</div>
+<div className="text-sm text-gray-300">復元すると現在のサーバーファイルが上書きされます。必ずサーバーを停止してから復元してください。</div>
+</div>
+
+1. **Backups**タブを開きます。
+2. 復元したいバックアップを選びます。
+3. **Restore**をクリックして確認ダイアログでOKします。
+
+復元後にサーバーを起動すると、バックアップ時点の状態に戻ります。
+
+## バックアップの削除
+
+**Backups**タブのバックアップ一覧のゴミ筒アイコンをクリックすると削除できます。
+
+</Ja>
+

@@ -1,0 +1,317 @@
+---
+title: Architecture
+description: How MC-Vector works internally — component architecture, IPC flow, and data pipelines.
+category: developer
+order: 2
+---
+
+<En>
+
+MC-Vector is built on **Tauri v2**, a framework that bundles a Rust binary and a web-based UI (React + Vite) into a single native desktop application. This page documents how the major subsystems connect.
+
+## High-Level Architecture
+
+```mermaid
+graph LR
+  subgraph Frontend ["Frontend<br/>(React + Vite)"]
+    UI["UI<br/>Components"]
+    Hooks["Custom<br/>Hooks"]
+    Lib["IPC Wrappers<br/>src/lib"]
+  end
+
+  subgraph IPC ["Tauri<br/>IPC Bridge"]
+    Invoke["invoke()"]
+    Events["emit /<br/>listen"]
+  end
+
+  subgraph Backend ["Backend<br/>(Rust)"]
+    Commands["Tauri<br/>Commands"]
+    State["AppState"]
+    Process["Process<br/>Manager"]
+    Store["Config<br/>Store"]
+  end
+
+  subgraph External ["External<br/>Services"]
+    JavaProc["Java<br/>Process"]
+    Modrinth["Modrinth<br/>API"]
+    Hangar["Hangar<br/>API"]
+    ngrok["ngrok<br/>Process"]
+    FS["File<br/>System"]
+  end
+
+  UI --> Hooks --> Lib --> Invoke --> Commands
+  Commands --> State
+  Commands --> Process --> JavaProc
+  Commands --> Store --> FS
+  Commands --> Modrinth
+  Commands --> Hangar
+  Commands --> ngrok
+  JavaProc -- stdout/<br/>stderr --> Process
+  Process -- emit<br/>server-log --> Events --> Hooks --> UI
+```
+
+## Server Lifecycle Flow
+
+This flowchart shows what happens when a user starts and stops a Minecraft server.
+
+```mermaid
+flowchart TD
+  A([User clicks Start]) --> B[invoke start_server]
+  B --> C{Java installed?}
+  C -- No --> D[Download JRE automatically]
+  D --> E[retry]
+  E --> C
+  C -- Yes --> F[Spawn Java child process]
+  F --> G[Pipe stdout/stderr]
+  G --> H[Emit server-log events to UI]
+  H --> I([Server is ONLINE])
+
+  I --> J{User action}
+  J -- Stop --> K[invoke stop_server]
+  K --> L[Send stop command to stdin]
+  L --> M[Graceful shutdown]
+  M --> N([Server is OFFLINE])
+
+  J -- Kill --> O[invoke kill_server]
+  O --> P[SIGKILL process]
+  P --> Q([Server is OFFLINE])
+```
+
+## IPC Communication
+
+All UI ↔ Rust communication uses Tauri's `invoke` function. There is no HTTP server.
+
+```mermaid
+sequenceDiagram
+  participant R as React Component
+  participant L as src/lib/commands.ts
+  participant T as Tauri IPC
+  participant C as Rust Command
+  participant S as AppState
+
+  R->>L: getServerList()
+  L->>T: invoke(get_server_list)
+  T->>C: get_server_list(state)
+  C->>S: state.servers.lock().await
+  S-->>C: Vec Server
+  C-->>T: Ok(servers)
+  T-->>L: Server[]
+  L-->>R: Server[]
+```
+
+## Log Streaming Pipeline
+
+Server log lines flow from the Java process to the React UI through Tauri events.
+
+```mermaid
+flowchart LR
+  A["Java Process<br/>stdout"] -->|line by line| B["tokio<br/>BufReader"]
+  B -->|trim and<br/>clone| C["app_handle<br/>.emit"]
+  C -->|WebView<br/>IPC| D["listen<br/>server-log"]
+  D -->|filter by<br/>server_id| E["React<br/>useState"]
+  E -->|last 2000<br/>lines| F["Buffer<br/>Cap"]
+  F -->|parse| G["ANSI<br/>Parser"]
+  G -->|colorize| H["Console<br/>UI"]
+  H -->|scroll<br/>guard| I["Auto-scroll<br/>on new log"]
+  style A fill:#1f2d23,stroke:#00e599,stroke-width:2px
+  style B fill:#1f2937,stroke:#6b7280,color:#e5e7eb
+  style C fill:#1f2937,stroke:#6b7280,color:#e5e7eb
+  style D fill:#1f2937,stroke:#6b7280,color:#e5e7eb
+  style E fill:#1f2937,stroke:#6b7280,color:#e5e7eb
+  style F fill:#1f2937,stroke:#6b7280,color:#e5e7eb
+  style G fill:#1f2937,stroke:#6b7280,color:#e5e7eb
+  style H fill:#1f2937,stroke:#6b7280,color:#e5e7eb
+  style I fill:#1f2d23,stroke:#00e599,stroke-width:2px
+```
+
+## Plugin Download Flow
+
+```mermaid
+flowchart TD
+  A([User opens Plugin Browser]) --> B{Platform?}
+  B -- Paper/Spigot --> C[Query Modrinth API]
+  B -- Velocity/Waterfall --> D[Query Hangar API]
+  C --> E[Display results]
+  D --> E
+  E --> F([User selects a plugin])
+  F --> G[invoke download_plugin]
+  G --> H[Fetch jar from CDN]
+  H --> I{Server running?}
+  I -- No --> J[Place in plugins or mods]
+  I -- Yes --> K[Place in plugins or mods]
+  K --> L[Restart required to load]
+  J --> M([Done])
+  L --> M
+```
+
+## Data Persistence
+
+```mermaid
+graph LR
+  subgraph AppData
+    Config[config.json]
+    Servers[servers/id/]
+  end
+
+  subgraph ConfigKeys[Config Contents]
+    Theme[theme]
+    WinState[window state]
+    ServerList[server registry]
+    NgrokToken[ngrok authtoken]
+  end
+
+  subgraph ServerDir[servers/id/]
+    Jar[server.jar]
+    Props[server.properties]
+    World[world/]
+    Plugins[plugins or mods/]
+    Logs[logs/latest.log]
+    Backups[backups/]
+  end
+
+  Config --> Theme
+  Config --> WinState
+  Config --> ServerList
+  Config --> NgrokToken
+
+  Servers --> Jar
+  Servers --> Props
+  Servers --> World
+  Servers --> Plugins
+  Servers --> Logs
+  Servers --> Backups
+```
+
+</En>
+
+<Ja>
+
+MC-Vectorは**Tauri v2**フレームワーク上に構築されており、RustバイナリとWebベースのUI（React + Vite）を単一のネイティブデスクトップアプリケーションとしてバンドルしています。
+
+## 高レベルアーキテクチャ
+
+```mermaid
+graph TB
+  subgraph Frontend ["フロントエンド React+Vite"]
+    UI[UIコンポーネント]
+    Hooks[カスタムフック]
+    Lib[IPCラッパー src/lib]
+  end
+
+  subgraph IPC ["Tauri IPCブリッジ"]
+    Invoke[invoke]
+    Events[emit / listen]
+  end
+
+  subgraph Backend ["バックエンド Rust"]
+    Commands[Tauriコマンド]
+    State[AppState]
+    Process[プロセスマネージャー]
+    Store[設定ストア]
+  end
+
+  subgraph External ["外部"]
+    JavaProc[Javaプロセス]
+    Modrinth[Modrinth API]
+    Hangar[Hangar API]
+    ngrok[ngrokプロセス]
+    FS[ファイルシステム]
+  end
+
+  UI --> Hooks --> Lib --> Invoke --> Commands
+  Commands --> State
+  Commands --> Process --> JavaProc
+  Commands --> Store --> FS
+  Commands --> Modrinth
+  Commands --> Hangar
+  Commands --> ngrok
+  JavaProc -- stdout/stderr --> Process
+  Process -- server-log --> Events --> Hooks --> UI
+```
+
+## サーバーライフサイクルフロー
+
+ユーザーがサーバーを起動・停止するときに何が起きるかを示します。
+
+```mermaid
+flowchart TD
+  A([Start クリック]) --> B[invoke start_server]
+  B --> C{Java インストール済?}
+  C -- いいえ --> D[JRE を自動ダウンロード]
+  D --> E[リトライ]
+  E --> C
+  C -- はい --> F[Java プロセスを起動]
+  F --> G[stdout/stderr をパイプ]
+  G --> H[server-log イベントを送信]
+  H --> I([サーバー ONLINE])
+
+  I --> J{ユーザー操作}
+  J -- Stop --> K[invoke stop_server]
+  K --> L[stdin に stop を送信]
+  L --> M[グレースフルシャットダウン]
+  M --> N([サーバー OFFLINE])
+
+  J -- Kill --> O[invoke kill_server]
+  O --> P[SIGKILL]
+  P --> Q([サーバー OFFLINE])
+```
+
+## IPC通信フロー
+
+すべてのUI ↔ Rust通信はTauriの`invoke`を使用します。HTTPサーバーは存在しません。
+
+```mermaid
+sequenceDiagram
+  participant R as React
+  participant L as src/lib
+  participant T as Tauri IPC
+  participant C as Rust
+  participant S as AppState
+
+  R->>L: getServerList()
+  L->>T: invoke get_server_list
+  T->>C: get_server_list(state)
+  C->>S: state.servers.lock().await
+  S-->>C: Vec Server
+  C-->>T: Ok servers
+  T-->>L: Server[]
+  L-->>R: Server[]
+```
+
+## ログストリーミングパイプライン
+
+サーバーのログラインがJavaプロセスからReact UIまで流れる経路です。
+
+```mermaid
+flowchart LR
+  A[Java stdout] -->|行ごと| B[tokio BufReader]
+  B -->|trim| C[app_handle.emit]
+  C -->|WebView IPC| D[listen server-log]
+  D -->|server_id フィルター| E[React useState]
+  E -->|最後の2000行| F[バッファ上限]
+  F --> G[ANSI パーサー]
+  G --> H[コンソール UI]
+  H -->|スクロール監視| I[自動スクロール]
+```
+
+## プラグインダウンロードフロー
+
+```mermaid
+flowchart TD
+  A([Plugin Browser を開く]) --> B{プラットフォーム?}
+  B -- Paper/Spigot --> C[Modrinth API で検索]
+  B -- Velocity/Waterfall --> D[Hangar API で検索]
+  C --> E[検索結果を表示]
+  D --> E
+  E --> F([プラグインを選択])
+  F --> G[invoke download_plugin]
+  G --> H[CDN から jar を取得]
+  H --> I{サーバー起動中?}
+  I -- いいえ --> J[plugins または mods に配置]
+  I -- はい --> K[plugins または mods に配置]
+  K --> L[再起動が必要]
+  J --> M([完了])
+  L --> M
+```
+
+</Ja>

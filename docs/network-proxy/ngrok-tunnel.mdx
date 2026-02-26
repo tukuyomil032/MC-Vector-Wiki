@@ -1,0 +1,96 @@
+---
+title: ngrok Tunnel
+description: Share your local Minecraft server with the world using ngrok.
+category: network-proxy
+order: 1
+---
+
+<En>
+
+MC-Vector includes built-in [ngrok](https://ngrok.com/) integration, letting you share your local server with friends over the internet **without any port forwarding**.
+
+## How it Works
+
+ngrok creates a secure TCP tunnel from a public endpoint (like `tcp://0.tcp.ngrok.io:12345`) to your server's local port. Your friends use the public address to connect — no router configuration needed.
+
+## Setup
+
+### 1. Get an ngrok Authtoken
+
+1. Sign up at [ngrok.com](https://ngrok.com/) (free account available).
+2. Go to **Your Authtoken** in the ngrok dashboard.
+3. Copy your authtoken.
+
+### 2. Enter the Token in MC-Vector
+
+1. Open your server in MC-Vector.
+2. Go to the **General Settings** tab.
+3. Find the **ngrok** section and paste your authtoken.
+4. Save the settings.
+
+### 3. Start the Tunnel
+
+In the **Console** or **General Settings** tab, click **Start Tunnel**. MC-Vector launches ngrok in the background.
+
+## Connecting with Friends
+
+Once the tunnel is active, the public address is displayed in the Console header, alternating between `localhost` and the ngrok URL every **3 seconds**.
+
+Give your friends the `tcp://...` address — they can paste it directly into the Minecraft multiplayer server list.
+
+## Limitations (Free Tier)
+
+| Limitation | Detail |
+|------------|--------|
+| Address stability | Changes every time the tunnel restarts |
+| Latency | Slightly higher than direct connection |
+| Bandwidth | Subject to ngrok's current free tier limits |
+
+> **Tip:** Upgrade to a paid ngrok plan to get a reserved TCP address that stays the same across restarts.
+
+</En>
+
+<Ja>
+
+MC-Vectorには[ngrok](https://ngrok.com/)との統合機能が内蔵されており、**ポート開放なし**でローカルサーバーを友達と共有できます。
+
+## 仕組み
+
+ngrokは公開エンドポイント（例：`tcp://0.tcp.ngrok.io:12345`）からローカルポートへのセキュアなTCPトンネルを作成します。友達はその公開アドレスで接続できます。
+
+## セットアップ
+
+### 1. ngrok Authtokenの取得
+
+1. [ngrok.com](https://ngrok.com/)でアカウントを作成（無料プランあり）。
+2. ngrokダッシュボードで**Your Authtoken**を開きます。
+3. Authtokenをコピーします。
+
+### 2. MC-VectorにTokenを設定
+
+1. MC-Vectorでサーバーを開きます。
+2. **General Settings**タブを開きます。
+3. **ngrok**セクションにAuthtokenを貼り付けます。
+4. 設定を保存します。
+
+### 3. トンネルを開始
+
+**Console**または**General Settings**タブで**Start Tunnel**をクリックします。MC-Vectorがバックグラウンドでngrokを起動します。
+
+## 友達の接続方法
+
+トンネルが有効になると、コンソールヘッダーに公開アドレスが表示され、`localhost`とngrok URLが**3秒ごと**に交互に表示されます。
+
+`tcp://...`アドレスを友達に伝えれば、MinecraftのマルチプレイヤーサーバーリストにそのままIPとして入力できます。
+
+## 制限事項（無料プラン）
+
+| 制限 | 内容 |
+|------|------|
+| アドレスの固定 | トンネルを再起動するたびにアドレスが変わる |
+| レイテンシー | 直接接続よりやや高め |
+| 帯域幅 | ngrokの無料プランの制限に準ずる |
+
+> **ヒント：** 有料ngrokプランにアップグレードすると、再起動しても変わらない固定TCPアドレスが使えます。
+
+</Ja>

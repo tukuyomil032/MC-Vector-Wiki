@@ -1,0 +1,86 @@
+---
+title: Installation
+description: Install and set up MC-Vector on your machine.
+category: getting-started
+order: 1
+---
+
+<En>
+
+MC-Vector is a desktop application available for **Windows** and **macOS**. Download the right installer for your platform from the [Download page](/download).
+
+## System Requirements
+
+| | Minimum | Recommended |
+|---|---|---|
+| **OS** | Windows 10 / macOS 12 | Windows 11 / macOS 13+ |
+| **RAM** | 4 GB | 8 GB+ |
+| **Java** | Java 17 | Java 21 (auto-downloaded) |
+
+> **Java is optional to pre-install.** MC-Vector includes a built-in **Java Manager** that can download and switch Java versions automatically.
+
+## Windows
+
+1. Go to the [Download page](/download) and click **Setup (.exe)**.
+2. Run the downloaded installer (`MC-Vector_x.x.x_x64-setup.exe`).
+3. Windows SmartScreen may warn you — click **"More info"** → **"Run anyway"**.
+4. Follow the installer wizard. MC-Vector will appear in your Start Menu.
+
+## macOS
+
+1. Go to the [Download page](/download).
+2. Download **DMG (Apple Silicon)** for M1/M2/M3/M4, or **.tar.gz (Universal)** for Intel.
+3. **DMG install:** Open the `.dmg`, drag **MC-Vector** to your **Applications** folder, then eject the disk image.
+4. **First launch:** macOS Gatekeeper may block the app. Run this once to clear the quarantine flag:
+
+```bash
+xattr -cr /Applications/MC-Vector.app
+```
+
+Then double-click the app to launch it normally.
+
+## After Installation
+
+The first time you open MC-Vector you will see an empty server list. Head over to [Server Creation](/docs/getting-started/server-creation) to create your first server.
+
+</En>
+
+<Ja>
+
+MC-Vectorは**Windows**と**macOS**に対応したデスクトップアプリケーションです。[ダウンロードページ](/download)から対応するインストーラーを入手してください。
+
+## システム要件
+
+| | 最小要件 | 推奨環境 |
+|---|---|---|
+| **OS** | Windows 10 / macOS 12 | Windows 11 / macOS 13以上 |
+| **RAM** | 4 GB | 8 GB以上 |
+| **Java** | Java 17 | Java 21（自動ダウンロード可） |
+
+> **Javaの事前インストールは不要です。** MC-Vectorには**Javaマネージャー**が内蔵されており、Javaのダウンロードとバージョン切り替えを自動で行えます。
+
+## Windows
+
+1. [ダウンロードページ](/download)にアクセスし、**Setup (.exe)** をクリックします。
+2. ダウンロードしたインストーラー（`MC-Vector_x.x.x_x64-setup.exe`）を実行します。
+3. Windows SmartScreenの警告が出た場合は **「詳細情報」** → **「実行」** をクリックします。
+4. ウィザードに従ってインストールを完了します。スタートメニューにMC-Vectorが追加されます。
+
+## macOS
+
+1. [ダウンロードページ](/download)にアクセスします。
+2. **Apple Silicon（M1/M2/M3/M4）は DMG (Apple Silicon)**、Intelや起動しない場合は **.tar.gz (Universal)** をダウンロードします。
+3. **DMGインストール：** `.dmg` を開き、**MC-Vector** を**アプリケーション**フォルダにドラッグします。
+4. **初回起動：** macOS Gatekeeperにブロックされた場合は、以下のコマンドで検疫フラグを解除します：
+
+```bash
+xattr -cr /Applications/MC-Vector.app
+```
+
+その後アプリをダブルクリックして通常どおり起動できます。
+
+## インストール後
+
+MC-Vectorを初めて開くとサーバーリストは空の状態です。[サーバー作成](/docs/getting-started/server-creation)ページへ進んで最初のMinecraftサーバーを作成しましょう。
+
+</Ja>

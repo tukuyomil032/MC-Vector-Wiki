@@ -1,0 +1,94 @@
+---
+title: Server Creation
+description: Create your first Minecraft server using MC-Vector.
+category: getting-started
+order: 2
+---
+
+<En>
+
+Creating a Minecraft server with MC-Vector takes under a minute. The app does all the heavy lifting — downloading the server software, accepting the EULA, and building the initial directory structure — automatically.
+
+## Step-by-Step
+
+1. Open **MC-Vector**.
+2. Click **"+ Add Server"** button.
+3. Fill in the server details:
+
+| Field | Description |
+|-------|-------------|
+| **Server Name** | Any name you like (e.g. `My Survival World`) |
+| **Software** | Choose a server type (Vanilla, Paper, Fabric, Forge, etc.) |
+| **Version** | The Minecraft version to run (e.g. `1.21.4`) |
+| **Port** | Network port — default `25565` |
+| **Memory Usage** | RAM allocated to the server (e.g. `2 GB`) |
+
+4. Click **Create**.
+
+### What MC-Vector does automatically
+
+- Creates a dedicated folder for the server.
+- Downloads the correct `.jar` from official sources (Mojang API, PaperMC API, etc.).
+- Generates `eula.txt` and accepts the EULA on your behalf.
+- Creates a default `server.properties`.
+
+## Starting the Server
+
+After creation the server appears in the server list on the left.
+
+1. Click on your server to open its control panel.
+2. Click **Start**.
+3. Watch the boot logs in the **Console** tab — when you see `Done!` the server is ready.
+
+Connect to your server from Minecraft using **`localhost`** (or `127.0.0.1`) as the address.
+
+## Next Steps
+
+- Manage your server in the [Server Lifecycle](/docs/features/server-lifecycle) guide.
+- Invite friends via [ngrok Tunnel](/docs/network-proxy/ngrok-tunnel) — no port forwarding needed.
+
+</En>
+
+<Ja>
+
+MC-VectorでMinecraftサーバーを作成するのは1分もかかりません。サーバーソフトのダウンロード、EULAへの同意、初期ディレクトリ構成の作成をすべて自動で行います。
+
+## 手順
+
+1. **MC-Vector** を開きます。
+2. **「+ Add Server」** ボタンをクリックします。
+3. サーバーの詳細を入力します：
+
+| 項目 | 説明 |
+|------|------|
+| **Server Name** | サーバーの名前（例：`My Survival World`） |
+| **Software** | サーバーソフトの種類（Vanilla、Paper、Fabricなど） |
+| **Version** | 使用するMinecraftのバージョン（例：`1.21.4`） |
+| **Port** | ネットワークポート — デフォルトは `25565` |
+| **Memory Usage** | サーバーに割り当てるRAM量（例：`2 GB`） |
+
+4. **「Create」** をクリックします。
+
+### MC-Vectorが自動で行うこと
+
+- サーバー専用フォルダの作成。
+- 公式ソース（Mojang API、PaperMC APIなど）から正しい `.jar` をダウンロード。
+- `eula.txt` を生成してEULAに自動同意。
+- デフォルトの `server.properties` を作成。
+
+## サーバーを起動する
+
+作成後、サーバーは画面左のリストに表示されます。
+
+1. サーバーをクリックしてコントロールパネルを開きます。
+2. **「Start」** をクリックします。
+3. **「Console」** タブで起動ログを確認します — `Done!` と表示されたら起動完了です。
+
+Minecraftクライアントのサーバーアドレスに **`localhost`**（または `127.0.0.1`）を入力して接続できます。
+
+## 次のステップ
+
+- [サーバーライフサイクル](/docs/features/server-lifecycle)ガイドでサーバー管理を学びましょう。
+- [ngrokトンネル](/docs/network-proxy/ngrok-tunnel)を使えばポート開放なしで友達を招待できます。
+
+</Ja>

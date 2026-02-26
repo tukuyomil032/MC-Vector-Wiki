@@ -1,0 +1,86 @@
+---
+title: General Settings
+description: Edit server name, software, version, and memory allocation for each server.
+category: configuration
+order: 3
+---
+
+<En>
+
+The **General Settings** tab lets you change the core configuration of an existing server without recreating it from scratch. Open it by selecting a server in the sidebar and clicking the **General Settings** tab.
+
+## Editable Fields
+
+| Field | Description |
+|-------|-------------|
+| **Server Name** | Display name shown in the server list |
+| **Software** | Server software type (Vanilla, Paper, Fabric, Forge, etc.) |
+| **Version** | Minecraft version (applies on next launch) |
+| **Memory** | Maximum heap allocation passed to the JVM (`-Xmx`) |
+
+## Changing the Software or Version
+
+1. Open the target server.
+2. Click the **General Settings** tab.
+3. Update **Software** and/or **Version** as needed.
+4. Click **Save**.
+
+> **Note:** MC-Vector will download the new server `.jar` the next time you start the server. Your world data and plugins are preserved unless you clear them manually.
+
+## Memory Allocation
+
+The **Memory** field sets the `-Xmx` JVM flag (maximum heap). A few guidelines:
+
+| Server Type | Recommended Memory |
+|-------------|-------------------|
+| Vanilla / small | 1–2 GB |
+| Paper with plugins | 2–4 GB |
+| Modpack (Forge / Fabric) | 4–8 GB |
+
+> Leave at least 1–2 GB free for the OS and MC-Vector itself.
+
+## Renaming a Server
+
+Changing the **Server Name** only updates the display label — it does **not** move or rename any files on disk. The server folder path stays the same.
+
+</En>
+
+<Ja>
+
+**General Settings**タブでは、サーバーを作り直すことなく既存サーバーのコア設定を変更できます。サイドバーでサーバーを選択し、**General Settings**タブをクリックして開きます。
+
+## 編集可能な項目
+
+| 項目 | 説明 |
+|------|------|
+| **Server Name** | サーバーリストに表示される名前 |
+| **Software** | サーバーソフトウェア（Vanilla / Paper / Fabric / Forge など） |
+| **Version** | Minecraftのバージョン（次回起動時に適用） |
+| **Memory** | JVMに渡す最大ヒープ確保量（`-Xmx`） |
+
+## ソフトウェア・バージョンの変更
+
+1. 対象のサーバーを開きます。
+2. **General Settings**タブをクリックします。
+3. **Software**や**Version**を変更します。
+4. **Save**をクリックします。
+
+> **注意：** MC-Vectorは次回サーバー起動時に新しいサーバー `.jar` をダウンロードします。ワールドデータやプラグインは手動で削除しない限り保持されます。
+
+## メモリ割り当て
+
+**Memory**フィールドはJVMの `-Xmx` フラグ（最大ヒープ）を設定します。目安：
+
+| サーバー種別 | 推奨メモリ |
+|-------------|-----------|
+| Vanilla / 小規模 | 1〜2 GB |
+| Paper + プラグイン | 2〜4 GB |
+| Modpack（Forge / Fabric） | 4〜8 GB |
+
+> OSとMC-Vector自体のために、少なくとも1〜2 GBは空けておいてください。
+
+## サーバー名の変更
+
+**Server Name**の変更は表示ラベルのみを更新します。ディスク上のファイルや、サーバーフォルダのパスは変わりません。
+
+</Ja>
