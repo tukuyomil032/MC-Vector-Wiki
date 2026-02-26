@@ -3,7 +3,7 @@ import path from "path";
 import matter from "gray-matter";
 import { type Doc, type DocMeta } from "@/lib/types";
 
-const DOCS_DIR = path.join(process.cwd(), "docs");
+const DOCS_DIR = path.join(process.cwd(), "content");
 
 // 再帰的にディレクトリを探索してすべてのMDXファイルを取得する
 function getFilesRecursively(dir: string): string[] {

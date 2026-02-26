@@ -87,6 +87,13 @@ export default function DocsIndexPage() {
 
   return (
     <div className="max-w-5xl mx-auto">
+      <div className="mb-8 mt-8 flex justify-center">
+        <img
+          src="/images/mc-vector-banner.png"
+          alt="MC-Vector Docs"
+          className="w-full max-w-4xl rounded-lg shadow-lg object-cover"
+        />
+      </div>
       <motion.div
         initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
