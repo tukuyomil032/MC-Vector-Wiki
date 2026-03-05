@@ -17,7 +17,9 @@ export function remarkMermaid() {
 }
 
 function walkTree(node: MdastNode) {
-  if (!node.children) return;
+  if (!node.children) {
+    return;
+  }
   for (let i = 0; i < node.children.length; i++) {
     const child = node.children[i];
     if (child.type === "code" && child.lang === "mermaid" && child.value) {

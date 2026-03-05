@@ -22,7 +22,9 @@ function groupByDate(commits: GithubCommit[]) {
   const groups: Record<string, GithubCommit[]> = {};
   for (const c of commits) {
     const day = c.commit.author.date.slice(0, 10);
-    if (!groups[day]) groups[day] = [];
+    if (!groups[day]) {
+      groups[day] = [];
+    }
     groups[day].push(c);
   }
   return Object.entries(groups).sort(([a], [b]) => (a < b ? 1 : -1));

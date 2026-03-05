@@ -26,7 +26,9 @@ async function getLatestRelease(): Promise<GithubRelease | null> {
         next: { revalidate: 1800 },
       }
     );
-    if (!res.ok) return null;
+    if (!res.ok) {
+      return null;
+    }
     return res.json();
   } catch {
     return null;

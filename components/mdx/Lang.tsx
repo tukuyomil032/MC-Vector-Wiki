@@ -8,7 +8,9 @@ import { useLanguage } from "@/components/LanguageProvider";
  */
 export function En({ children }: { children: React.ReactNode }) {
   const { lang } = useLanguage();
-  if (lang === "ja") return null;
+  if (lang === "ja") {
+    return null;
+  }
   return <>{children}</>;
 }
 
@@ -18,6 +20,8 @@ export function En({ children }: { children: React.ReactNode }) {
  */
 export function Ja({ children }: { children: React.ReactNode }) {
   const { lang } = useLanguage();
-  if (lang === "en") return null;
+  if (lang === "en") {
+    return null;
+  }
   return <>{children}</>;
 }

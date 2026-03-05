@@ -28,7 +28,9 @@ async function getCommits(): Promise<GithubCommit[]> {
         next: { revalidate: 1800 },
       }
     );
-    if (!res.ok) return [];
+    if (!res.ok) {
+      return [];
+    }
     return res.json();
   } catch {
     return [];

@@ -14,7 +14,9 @@ export function DocDescription({ slug, fallback }: DocDescriptionProps) {
     translations[lang].docs.descriptions[slug as keyof typeof translations.en.docs.descriptions] ??
     fallback;
 
-  if (!desc) return null;
+  if (!desc) {
+    return null;
+  }
 
   return (
     <p className="text-lg text-muted-foreground leading-relaxed">

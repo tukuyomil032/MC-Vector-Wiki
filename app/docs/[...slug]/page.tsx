@@ -43,7 +43,9 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const resolvedParams = await params;
   const doc = getDocBySlug(resolvedParams.slug);
-  if (!doc) return {};
+  if (!doc) {
+    return {};
+  }
   return {
     title: `${doc.title} - MC-Vector Wiki`,
     description: doc.description,

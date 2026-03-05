@@ -30,18 +30,24 @@ function buildExcerpt(body: string, query: string): string {
 }
 
 function searchDocs(docs: DocEntry[], query: string): SearchResult[] {
-  if (!query.trim()) return [];
+  if (!query.trim()) {
+    return [];
+  }
   const q = query.toLowerCase();
   const words = q.split(/\s+/).filter(Boolean);
 
   return docs
     .map((doc) => {
       const titleScore = words.reduce((acc, w) => {
-        if (doc.title.toLowerCase().includes(w)) return acc + 10;
+        if (doc.title.toLowerCase().includes(w)) {
+          return acc + 10;
+        }
         return acc;
       }, 0);
       const descScore = words.reduce((acc, w) => {
-        if (doc.description.toLowerCase().includes(w)) return acc + 5;
+        if (doc.description.toLowerCase().includes(w)) {
+          return acc + 5;
+        }
         return acc;
       }, 0);
       const bodyScore = words.reduce((acc, w) => {
@@ -73,7 +79,9 @@ export function SearchModal() {
         e.preventDefault();
         setOpen((v) => !v);
       }
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+      }
     };
     window.addEventListener("keydown", handler);
     return () => window.removeEventListener("keydown", handler);
@@ -91,7 +99,9 @@ export function SearchModal() {
 
   // Fetch docs once
   const fetchDocs = useCallback(async () => {
-    if (cachedDocs) return cachedDocs;
+    if (cachedDocs) {
+      return cachedDocs;
+    }
     setLoading(true);
     try {
       const res = await fetch("/api/search");
@@ -104,12 +114,18 @@ export function SearchModal() {
 
   // Search on query change
   useEffect(() => {
-    if (!open) return;
-    if (!query.trim()) { setResults([]); return; }
+    if (!open) {
+      return;
+    }
+    if (!query.trim()) {
+       setResults([]); return;
+    }
     let cancelled = false;
     (async () => {
       const docs = await fetchDocs();
-      if (cancelled || !docs) return;
+      if (cancelled || !docs) {
+        return;
+      }
       setResults(searchDocs(docs, query));
       setSelected(0);
     })();
@@ -122,9 +138,15 @@ export function SearchModal() {
   };
 
   const handleKey = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowDown") { e.preventDefault(); setSelected((s) => Math.min(s + 1, results.length - 1)); }
-    if (e.key === "ArrowUp")   { e.preventDefault(); setSelected((s) => Math.max(s - 1, 0)); }
-    if (e.key === "Enter" && results[selected]) navigate(results[selected].slug);
+    if (e.key === "ArrowDown") {
+      e.preventDefault(); setSelected((s) => Math.min(s + 1, results.length - 1));
+    }
+    if (e.key === "ArrowUp") {
+      e.preventDefault(); setSelected((s) => Math.max(s - 1, 0));
+    }
+    if (e.key === "Enter" && results[selected]) {
+      navigate(results[selected].slug);
+    }
   };
 
   return (

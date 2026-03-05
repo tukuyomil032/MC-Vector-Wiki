@@ -62,11 +62,21 @@ function classifyAssets(assets: ReleaseAsset[]): Platform[] {
 }
 
 function getAssetLabel(name: string): string {
-  if (name.includes("aarch64") && name.endsWith(".dmg")) return "DMG (Apple Silicon)";
-  if (name.includes("x64") && name.endsWith(".dmg")) return "DMG (Intel)";
-  if (name.endsWith(".app.tar.gz") || name.endsWith(".tar.gz")) return ".tar.gz (Universal)";
-  if (name.endsWith(".exe")) return "Setup (.exe)";
-  if (name.endsWith(".msi")) return "Installer (.msi)";
+  if (name.includes("aarch64") && name.endsWith(".dmg")) {
+    return "DMG (Apple Silicon)";
+  }
+  if (name.includes("x64") && name.endsWith(".dmg")) {
+    return "DMG (Intel)";
+  }
+  if (name.endsWith(".app.tar.gz") || name.endsWith(".tar.gz")) {
+    return ".tar.gz (Universal)";
+  }
+  if (name.endsWith(".exe")) {
+    return "Setup (.exe)";
+  }
+  if (name.endsWith(".msi")) {
+    return "Installer (.msi)";
+  }
   return name;
 }
 

@@ -47,12 +47,16 @@ export function Mermaid({ chart }: MermaidProps) {
   const [errorMsg, setErrorMsg] = useState("");
 
   useEffect(() => {
-    if (!chart) return;
+    if (!chart) {
+      return;
+    }
     let cancelled = false;
 
     getMermaid()
       .then(async (mermaid) => {
-        if (cancelled) return;
+        if (cancelled) {
+          return;
+        }
         const uid = `mcv-mermaid-${++uidCounter}`;
         const { svg } = await mermaid.render(uid, chart.trim());
         if (!cancelled && containerRef.current) {

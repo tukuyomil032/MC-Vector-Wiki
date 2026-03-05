@@ -22,10 +22,32 @@ export function WikiSidebar({ docs, className }: { docs: Doc[]; className?: stri
   const pathname = usePathname();
   const { t } = useLanguage();
 
+  function resolveDocLabel(doc: Doc) {
+    const links = (t.docs.links as Record<string, any>);
+    const full = doc.slug; // e.g. "getting-started/installation"
+    if (links[full]?.label) return links[full].label;
+    const parts = full.split("/");
+    const last = parts[parts.length - 1];
+    const category = parts[0];
+    const catCamel = category + last.charAt(0).toUpperCase() + last.slice(1);
+    if (links[catCamel]?.label) return links[catCamel].label;
+    if (links[last]?.label) return links[last].label;
+    const camel = last
+      .split(/[-_]/)
+      .map((s, i) => (i === 0 ? s : s.charAt(0).toUpperCase() + s.slice(1)))
+      .join("");
+    if (links[camel]?.label) return links[camel].label;
+    const cleaned = last.replace(/[^A-Za-z0-9]/g, "");
+    if (links[cleaned]?.label) return links[cleaned].label;
+    return doc.title;
+  }
+
   const groupedDocs = docs.reduce(
     (acc, doc) => {
       const category = doc.category;
-      if (!acc[category]) acc[category] = [];
+      if (!acc[category]) {
+        acc[category] = [];
+      }
       acc[category].push(doc);
       return acc;
     },
@@ -34,7 +56,9 @@ export function WikiSidebar({ docs, className }: { docs: Doc[]; className?: stri
 
   Object.keys(groupedDocs).forEach((cat) => {
     groupedDocs[cat].sort((a, b) => {
-      if (a.order !== undefined && b.order !== undefined) return a.order - b.order;
+      if (a.order !== undefined && b.order !== undefined) {
+        return a.order - b.order;
+      }
       return a.title.localeCompare(b.title);
     });
   });
@@ -72,6 +96,7 @@ export function WikiSidebar({ docs, className }: { docs: Doc[]; className?: stri
                 {categoryDocs.map((doc) => {
                   const href = `/docs/${doc.slug}`;
                   const isActive = pathname === href;
+                  const docLabel = resolveDocLabel(doc);
                   return (
                     <motion.li
                       key={doc.slug}
@@ -86,8 +111,8 @@ export function WikiSidebar({ docs, className }: { docs: Doc[]; className?: stri
                             ? "sidebar-active-link"
                             : "border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground"
                         )}
-                      >
-                        {doc.title}
+                        >
+                        {docLabel}
                       </Link>
                     </motion.li>
                   );
