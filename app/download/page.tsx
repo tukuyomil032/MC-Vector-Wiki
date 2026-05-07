@@ -1,49 +1,49 @@
-import { DownloadClient } from "./DownloadClient";
-import { WikiHeader } from "@/components/WikiHeader";
+import { WikiHeader } from '@/components/WikiHeader'
+import { DownloadClient } from './DownloadClient'
 
 export interface ReleaseAsset {
-  name: string;
-  browser_download_url: string;
-  size: number;
-  content_type: string;
+  name: string
+  browser_download_url: string
+  size: number
+  content_type: string
 }
 
 export interface GithubRelease {
-  tag_name: string;
-  name: string;
-  published_at: string;
-  html_url: string;
-  body: string;
-  assets: ReleaseAsset[];
+  tag_name: string
+  name: string
+  published_at: string
+  html_url: string
+  body: string
+  assets: ReleaseAsset[]
 }
 
 async function getLatestRelease(): Promise<GithubRelease | null> {
   try {
     const res = await fetch(
-      "https://api.github.com/repos/tukuyomil032/MC-Vector/releases/latest",
+      'https://api.github.com/repos/tukuyomil032/MC-Vector/releases/latest',
       {
-        headers: { Accept: "application/vnd.github+json" },
+        headers: { Accept: 'application/vnd.github+json' },
         next: { revalidate: 1800 },
       }
-    );
+    )
     if (!res.ok) {
-      return null;
+      return null
     }
-    return res.json();
+    return res.json()
   } catch {
-    return null;
+    return null
   }
 }
 
 export default async function DownloadPage() {
-  const release = await getLatestRelease();
+  const release = await getLatestRelease()
 
   return (
-    <div className="flex flex-col min-h-screen bg-background">
+    <div className='flex flex-col min-h-screen bg-background'>
       <WikiHeader />
-      <main className="flex-1">
+      <main className='flex-1'>
         <DownloadClient release={release} />
       </main>
     </div>
-  );
+  )
 }

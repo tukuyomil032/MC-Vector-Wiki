@@ -1,10 +1,10 @@
 type MdastNode = {
-  type: string;
-  lang?: string;
-  value?: string;
-  children?: MdastNode[];
-  [key: string]: unknown;
-};
+  type: string
+  lang?: string
+  value?: string
+  children?: MdastNode[]
+  [key: string]: unknown
+}
 
 /**
  * Remark plugin: convert ```mermaid fences into <DynamicMermaid chart="..." />
@@ -12,32 +12,32 @@ type MdastNode = {
  */
 export function remarkMermaid() {
   return (tree: MdastNode) => {
-    walkTree(tree);
-  };
+    walkTree(tree)
+  }
 }
 
 function walkTree(node: MdastNode) {
   if (!node.children) {
-    return;
+    return
   }
   for (let i = 0; i < node.children.length; i++) {
-    const child = node.children[i];
-    if (child.type === "code" && child.lang === "mermaid" && child.value) {
+    const child = node.children[i]
+    if (child.type === 'code' && child.lang === 'mermaid' && child.value) {
       // Replace with MDX JSX flow element <DynamicMermaid chart="..." />
       node.children[i] = {
-        type: "mdxJsxFlowElement",
-        name: "DynamicMermaid",
+        type: 'mdxJsxFlowElement',
+        name: 'DynamicMermaid',
         attributes: [
           {
-            type: "mdxJsxAttribute",
-            name: "chart",
+            type: 'mdxJsxAttribute',
+            name: 'chart',
             value: child.value,
           },
         ],
         children: [],
-      };
+      }
     } else {
-      walkTree(child);
+      walkTree(child)
     }
   }
 }

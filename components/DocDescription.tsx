@@ -1,26 +1,23 @@
-"use client";
+'use client'
 
-import { useLanguage } from "./LanguageProvider";
-import { translations } from "@/lib/i18n";
+import { translations } from '@/lib/i18n'
+import { useLanguage } from './LanguageProvider'
 
 interface DocDescriptionProps {
-  slug: string;
-  fallback?: string;
+  slug: string
+  fallback?: string
 }
 
 export function DocDescription({ slug, fallback }: DocDescriptionProps) {
-  const { lang } = useLanguage();
+  const { lang } = useLanguage()
   const desc =
-    translations[lang].docs.descriptions[slug as keyof typeof translations.en.docs.descriptions] ??
-    fallback;
+    translations[lang].docs.descriptions[
+      slug as keyof typeof translations.en.docs.descriptions
+    ] ?? fallback
 
   if (!desc) {
-    return null;
+    return null
   }
 
-  return (
-    <p className="text-lg text-muted-foreground leading-relaxed">
-      {desc}
-    </p>
-  );
+  return <p className='text-lg text-muted-foreground leading-relaxed'>{desc}</p>
 }

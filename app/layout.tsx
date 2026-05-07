@@ -1,45 +1,48 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { Providers } from "./providers";
-import { LanguageProvider } from "@/components/LanguageProvider";
+import type { Metadata } from 'next'
+import { Geist, Geist_Mono } from 'next/font/google'
+import './globals.css'
+import { LanguageProvider } from '@/components/LanguageProvider'
+import { Providers } from './providers'
 
 const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-sans',
+  subsets: ['latin'],
+})
 
 const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+  variable: '--font-geist-mono',
+  subsets: ['latin'],
+})
 
 export const metadata: Metadata = {
-  title: "MC-Vector Wiki",
-  description: "Official documentation for MC-Vector - The ultimate Minecraft server management tool.",
+  title: 'MC-Vector Wiki',
+  description:
+    'Official documentation for MC-Vector - The ultimate Minecraft server management tool.',
   icons: {
-    icon: "/favicon.ico",
-    shortcut: "/favicon.ico",
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
   },
-};
+}
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: React.ReactNode
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning className="dark">
+    <html lang='en' suppressHydrationWarning className='dark'>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-background text-foreground selection:bg-primary/30`}
       >
-        <Providers attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
-          <LanguageProvider>
-            {children}
-          </LanguageProvider>
+        <Providers
+          attribute='class'
+          defaultTheme='dark'
+          enableSystem={false}
+          disableTransitionOnChange
+        >
+          <LanguageProvider>{children}</LanguageProvider>
         </Providers>
       </body>
     </html>
-  );
+  )
 }
-

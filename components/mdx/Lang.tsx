@@ -1,17 +1,17 @@
-"use client";
+'use client'
 
-import { useLanguage } from "@/components/LanguageProvider";
+import { useLanguage } from '@/components/LanguageProvider'
 
 /**
  * Renders children only when English is the active language.
  * Wrap English-only content inside <En>…</En> in MDX files.
  */
 export function En({ children }: { children: React.ReactNode }) {
-  const { lang } = useLanguage();
-  if (lang === "ja") {
-    return null;
+  const { lang } = useLanguage()
+  if (lang === 'ja') {
+    return null
   }
-  return <>{children}</>;
+  return <>{children}</>
 }
 
 /**
@@ -19,9 +19,9 @@ export function En({ children }: { children: React.ReactNode }) {
  * Wrap Japanese-only content inside <Ja>…</Ja> in MDX files.
  */
 export function Ja({ children }: { children: React.ReactNode }) {
-  const { lang } = useLanguage();
-  if (lang === "en") {
-    return null;
+  const { lang } = useLanguage()
+  if (lang === 'en') {
+    return null
   }
-  return <>{children}</>;
+  return <>{children}</>
 }

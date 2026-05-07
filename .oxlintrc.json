@@ -1,0 +1,28 @@
+{
+  "jsPlugins": [
+    "eslint-plugin-tailwindcss",
+    "eslint-plugin-unused-imports"
+  ],
+  "plugins": [
+    "react",
+    "import",
+    "nextjs",
+    "typescript",
+    "eslint",
+    "node",
+    "oxc"
+  ],
+  "ignorePatterns": [
+    "**node_modules/**",
+    "**/*.config.{js,mjs,ts}",
+    "**/dist/**",
+    "packages/**"
+  ],
+  "rules": {
+    "typescript/no-floating-promises": "error",
+    "eslint/no-unused-vars": "off",
+    "unused-imports/no-unused-imports": "error",
+    "unused-imports/no-unused-vars": "error",
+    "@next/next/no-img-element": "off"
+  }
+}

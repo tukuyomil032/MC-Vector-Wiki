@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 @plugin "@tailwindcss/typography";
 
 /* Wiki Custom Theme Variables */
@@ -6,7 +6,7 @@
   /* Light Theme (Fallback, but we'll force dark mode mostly) */
   --background: #ffffff;
   --foreground: #000000;
-  --primary: #00e599;    /* Electrobun Cyan/Green */
+  --primary: #00e599; /* Electrobun Cyan/Green */
   --primary-foreground: #000000;
   --muted: #f1f5f9;
   --muted-foreground: #64748b;
@@ -20,12 +20,12 @@
     /* Dark Theme - Electrobun Style */
     --background: #0b0b0e; /* Very dark near-black */
     --foreground: #e2e8f0; /* Light gray text */
-    --primary: #00e599;    /* Cyan/Green accent */
+    --primary: #00e599; /* Cyan/Green accent */
     --primary-foreground: #000000;
-    --muted: #131318;      /* Very dark gray for code blocks etc */
+    --muted: #131318; /* Very dark gray for code blocks etc */
     --muted-foreground: #888888; /* Dimmed text */
-    --border: #222228;     /* Subtle borders */
-    --surface: #0f0f14;    /* Card background */
+    --border: #222228; /* Subtle borders */
+    --surface: #0f0f14; /* Card background */
     --sidebar-bg: #0b0b0e;
   }
 }
@@ -116,44 +116,102 @@
 
 .prose code::before,
 .prose code::after {
-  content: "";
+  content: '';
 }
-
-
 
 body {
   background: var(--background);
   background-image:
-    radial-gradient(ellipse 80% 60% at 15% 5%,  rgba(99,102,241,0.04) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 50% at 85% 95%, rgba(0,229,153,0.03) 0%, transparent 55%),
-    radial-gradient(ellipse 50% 40% at 50% 50%, rgba(59,130,246,0.02) 0%, transparent 60%);
+    radial-gradient(
+      ellipse 80% 60% at 15% 5%,
+      rgba(99, 102, 241, 0.04) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 60% 50% at 85% 95%,
+      rgba(0, 229, 153, 0.03) 0%,
+      transparent 55%
+    ),
+    radial-gradient(
+      ellipse 50% 40% at 50% 50%,
+      rgba(59, 130, 246, 0.02) 0%,
+      transparent 60%
+    );
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
 
 /* ─── Highlight.js dark theme ─────────────────────────────────────────────── */
-.hljs { color: #abb2bf; }
-.hljs-comment,.hljs-quote                       { color: #5c6370; font-style: italic; }
-.hljs-doctag,.hljs-keyword,.hljs-formula        { color: #c678dd; }
-.hljs-section,.hljs-name,.hljs-selector-tag,
-.hljs-deletion,.hljs-subst                      { color: #e06c75; }
-.hljs-literal                                   { color: #56b6c2; }
-.hljs-string,.hljs-regexp,.hljs-addition,
-.hljs-attribute,.hljs-meta-string               { color: #98c379; }
-.hljs-built_in,.hljs-class .hljs-title          { color: #e6c07b; }
-.hljs-attr,.hljs-variable,.hljs-template-variable,
-.hljs-type,.hljs-selector-class,.hljs-selector-attr,
-.hljs-selector-pseudo,.hljs-number              { color: #d19a66; }
-.hljs-symbol,.hljs-bullet,.hljs-link,
-.hljs-meta,.hljs-selector-id,.hljs-title        { color: #61aeee; }
-.hljs-emphasis                                  { font-style: italic; }
-.hljs-strong                                    { font-weight: bold; }
-.hljs-link                                      { text-decoration: underline; }
+.hljs {
+  color: #abb2bf;
+}
+.hljs-comment,
+.hljs-quote {
+  color: #5c6370;
+  font-style: italic;
+}
+.hljs-doctag,
+.hljs-keyword,
+.hljs-formula {
+  color: #c678dd;
+}
+.hljs-section,
+.hljs-name,
+.hljs-selector-tag,
+.hljs-deletion,
+.hljs-subst {
+  color: #e06c75;
+}
+.hljs-literal {
+  color: #56b6c2;
+}
+.hljs-string,
+.hljs-regexp,
+.hljs-addition,
+.hljs-attribute,
+.hljs-meta-string {
+  color: #98c379;
+}
+.hljs-built_in,
+.hljs-class .hljs-title {
+  color: #e6c07b;
+}
+.hljs-attr,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-type,
+.hljs-selector-class,
+.hljs-selector-attr,
+.hljs-selector-pseudo,
+.hljs-number {
+  color: #d19a66;
+}
+.hljs-symbol,
+.hljs-bullet,
+.hljs-link,
+.hljs-meta,
+.hljs-selector-id,
+.hljs-title {
+  color: #61aeee;
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: bold;
+}
+.hljs-link {
+  text-decoration: underline;
+}
 
 /* ─── Card spinning border animation ─────────────────────────────────────── */
 @keyframes card-bg-spin {
-  from { transform: rotate(0deg); }
-  to   { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .card-spinning-bg {
@@ -162,10 +220,10 @@ body {
   background: conic-gradient(
     from 0deg,
     transparent 72%,
-    #60a5fa    78%,
-    #818cf8    84%,
-    #00e599    90%,
-    #60a5fa    96%,
+    #60a5fa 78%,
+    #818cf8 84%,
+    #00e599 90%,
+    #60a5fa 96%,
     transparent 100%
   );
   animation: card-bg-spin 4s linear infinite;
@@ -174,11 +232,36 @@ body {
 
 /* ─── Sidebar active item animated border ─────────────────────────────────── */
 @keyframes sidebar-border-glow {
-  0%   { box-shadow: -2px 0 8px 0 #7c3aed, inset -2px 0 0 0 #7c3aed; border-color: #7c3aed; }
-  25%  { box-shadow: -2px 0 8px 0 #3b82f6, inset -2px 0 0 0 #3b82f6; border-color: #3b82f6; }
-  50%  { box-shadow: -2px 0 8px 0 #00e599, inset -2px 0 0 0 #00e599; border-color: #00e599; }
-  75%  { box-shadow: -2px 0 8px 0 #8b5cf6, inset -2px 0 0 0 #8b5cf6; border-color: #8b5cf6; }
-  100% { box-shadow: -2px 0 8px 0 #7c3aed, inset -2px 0 0 0 #7c3aed; border-color: #7c3aed; }
+  0% {
+    box-shadow:
+      -2px 0 8px 0 #7c3aed,
+      inset -2px 0 0 0 #7c3aed;
+    border-color: #7c3aed;
+  }
+  25% {
+    box-shadow:
+      -2px 0 8px 0 #3b82f6,
+      inset -2px 0 0 0 #3b82f6;
+    border-color: #3b82f6;
+  }
+  50% {
+    box-shadow:
+      -2px 0 8px 0 #00e599,
+      inset -2px 0 0 0 #00e599;
+    border-color: #00e599;
+  }
+  75% {
+    box-shadow:
+      -2px 0 8px 0 #8b5cf6,
+      inset -2px 0 0 0 #8b5cf6;
+    border-color: #8b5cf6;
+  }
+  100% {
+    box-shadow:
+      -2px 0 8px 0 #7c3aed,
+      inset -2px 0 0 0 #7c3aed;
+    border-color: #7c3aed;
+  }
 }
 
 .sidebar-active-link {
